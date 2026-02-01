@@ -13,7 +13,7 @@
   --bgB:#D6C6F5;      /* lavender */
   --bgC:#FFD6C9;      /* peach */
   --panel: rgba(255,255,255,.72);
-  --ink:#2b2b2b;
+  --ink:#2a2526;      /* slightly warmer ink */
   --shadow:0 25px 60px rgba(233,106,106,.14);
   --r:28px;
 }
@@ -28,24 +28,28 @@ body{
   place-items:center;
   color: var(--ink);
   transition: background 400ms ease, color 250ms ease;
+
+  /* room for florals */
+  padding: clamp(18px, 4vw, 46px);
+
   background:
-    radial-gradient(1000px 600px at 20% 10%, rgba(255,77,134,.18) 0%, transparent 55%),
-    radial-gradient(900px 500px at 90% 20%, rgba(255,120,167,.16) 0%, transparent 50%),
+    radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent2) 18%, white) 0%, transparent 55%),
+    radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--bgC) 22%, white) 0%, transparent 50%),
     linear-gradient(135deg, var(--bgA), var(--bgB), var(--bgC));
 }
 
 /* ===== Themes per stage ===== */
 body[data-theme="welcome"]{
   --bgA:#FFF6FA; --bgB:#EDE2FF; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.80); --ink:#2b2b2b;
+  --panel: rgba(255,255,255,.80); --ink:#2a2526;
 }
 body[data-theme="love-letter"]{
   --bgA:#FFF2F7; --bgB:#EDE2FF; --bgC:#FFE1D6; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.74); --ink:#2b2b2b;
+  --panel: rgba(255,255,255,.74); --ink:#2a2526;
 }
 body[data-theme="pop-quiz"]{
   --bgA:#F9F3FF; --bgB:#EDE2FF; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.76); --ink:#2b2b2b;
+  --panel: rgba(255,255,255,.76); --ink:#2a2526;
 }
 body[data-theme="arcade"]{
   --bgA:#1A0F2E; --bgB:#2A1447; --bgC:#3A1B52; --accent:#F7A6C6; --accent2:#D6C6F5;
@@ -53,15 +57,44 @@ body[data-theme="arcade"]{
 }
 body[data-theme="polaroid"]{
   --bgA:#FFF6FA; --bgB:#FFE9F2; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.80); --ink:#2b2b2b;
+  --panel: rgba(255,255,255,.80); --ink:#2a2526;
 }
 
-/* Enhance theme background using current accent colors */
+/* Ensure background reacts to theme vars */
 body{
   background:
     radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent2) 18%, white) 0%, transparent 55%),
     radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--bgC) 22%, white) 0%, transparent 50%),
     linear-gradient(135deg, var(--bgA), var(--bgB), var(--bgC));
+}
+
+/* =========================
+   Watercolor floral frame
+   (uses floral.jpg)
+========================= */
+.floralFrame{
+  position: fixed;
+  inset: 10px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background-image: url("floral.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  filter: saturate(1.05) blur(0.15px);
+}
+
+body[data-theme="arcade"] .floralFrame{
+  opacity: 0.14;
+  filter: saturate(1) blur(0.2px);
+}
+
+@media (max-width: 520px){
+  .floralFrame{
+    inset: 6px;
+    opacity: 0.42;
+  }
 }
 
 .wrap{
@@ -71,20 +104,23 @@ body{
   grid-template-columns:1.15fr .85fr;
   align-items:start;
   position:relative;
-  z-index:1;
+  z-index:1; /* above frame */
 }
 @media(max-width:920px){.wrap{grid-template-columns:1fr}}
 
 .card{
   background:
-    linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.62));
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.70));
   backdrop-filter:blur(10px);
   border-radius:30px;
   padding:24px;
-  box-shadow:0 25px 60px rgba(233,106,106,.14);
-  border:1px solid rgba(255,255,255,.75);
+  box-shadow:0 25px 60px rgba(233,106,106,.12);
+  border:1px solid rgba(255,255,255,.78);
 }
-body[data-theme="arcade"] .card{ border-color: rgba(255,255,255,.18); }
+body[data-theme="arcade"] .card{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+}
 
 h1{margin:0 0 6px; font-size:clamp(26px,4vw,36px)}
 h2{margin:0 0 10px; font-size:clamp(18px,3vw,24px)}
@@ -113,9 +149,7 @@ p{margin:8px 0; line-height:1.4}
   box-shadow: 0 18px 45px rgba(233,106,106,.22);
   transform: translateY(-1px);
 }
-.bigbtn.ghost:hover{
-  transform: translateY(-1px);
-}
+.bigbtn.ghost:hover{ transform: translateY(-1px); }
 
 .primary{
   background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -214,11 +248,7 @@ body[data-theme="arcade"] .step{ background: rgba(255,255,255,.10); border-color
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 .cwRow.correct{ animation: pop .22s ease }
-@keyframes pop{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.03)}
-  100%{transform:scale(1)}
-}
+@keyframes pop{ 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
 .cell{
   width:52px;
   height:56px;
@@ -259,30 +289,117 @@ body[data-theme="arcade"] .cell{ background: rgba(255,255,255,.12); border-color
 .clue b{min-width:18px}
 body[data-theme="arcade"] .clue{ border-top-color: rgba(255,255,255,.12); }
 
-/* ===== Quiz ===== */
+/* ===== Quiz (Canvas-style) ===== */
 .quizBox{
   background:rgba(255,255,255,.65);
   border:1px solid rgba(0,0,0,.08);
   border-radius:18px;
   padding:14px;
+
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+
+  position: relative; /* for submitting overlay */
 }
-body[data-theme="arcade"] .quizBox{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
-.q{ padding:10px 0; border-top:1px solid rgba(0,0,0,.06); }
-.q:first-child{border-top:0}
-.q .qtitle{font-weight:900; margin-bottom:8px}
-.choices{display:flex; gap:10px; flex-wrap:wrap}
+body[data-theme="arcade"] .quizBox{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+}
+
+.q{
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.85);
+  border: 1px solid rgba(0,0,0,.08);
+}
+body[data-theme="arcade"] .q{
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.18);
+}
+
+.qtitle{
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
 .choice{
-  padding:10px 12px;
+  width:100%;
+  text-align:left;
+  padding:10px 14px;
   border-radius:14px;
   border:1px solid rgba(0,0,0,.10);
   background:#fff;
   cursor:pointer;
   font-weight:800;
-  color: #111;
+  color:#111;
 }
-body[data-theme="arcade"] .choice{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.20); color: var(--ink); }
+body[data-theme="arcade"] .choice{
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.20);
+  color: var(--ink);
+}
 .choice.correct{border-color: rgba(40,167,69,.35); background: rgba(40,167,69,.10)}
 .choice.wrong{border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: color-mix(in srgb, var(--accent) 10%, white); }
+
+/* Canvas-style quiz info bar */
+.quizInfo{
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.08);
+  color: rgba(0,0,0,.65);
+}
+body[data-theme="arcade"] .quizInfo{
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.75);
+}
+
+/* Submitting overlay (Canvas-ish) */
+.submittingOverlay{
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-weight:900;
+  z-index:5;
+}
+body[data-theme="arcade"] .submittingOverlay{
+  background: rgba(20,20,24,.55);
+}
+
+/* little spinner */
+.spinner{
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  border:3px solid rgba(0,0,0,.12);
+  border-top-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  animation: spin .8s linear infinite;
+}
+body[data-theme="arcade"] .spinner{
+  border-color: rgba(255,255,255,.18);
+  border-top-color: rgba(255,255,255,.55);
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
 
 /* ===== Heart Catch ===== */
 .arena{
@@ -345,7 +462,7 @@ body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-colo
   cursor:pointer;
   box-shadow:0 10px 18px rgba(0,0,0,.08);
   background-repeat:no-repeat;
-  background-size: 300% 300%; /* IMPORTANT: slice into 3x3 */
+  background-size: 300% 300%;
   transition: transform .08s ease;
 }
 .tileBtn:active{ transform: translateY(1px) scale(.99); }
@@ -381,6 +498,7 @@ body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-colo
   transition:.2s;
   pointer-events:none;
   font-weight:700;
+  z-index: 10;
 }
 .toast.show{opacity:1}
 .confetti{
@@ -388,6 +506,7 @@ body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-colo
   top:-20px;
   animation: fallConf linear forwards;
   pointer-events:none;
+  z-index: 9;
 }
 @keyframes fallConf{
   to{transform:translateY(110vh) rotate(360deg); opacity:0}
@@ -400,7 +519,7 @@ body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-colo
   pointer-events: none;
   opacity: .18;
   filter: blur(.2px);
-  z-index: 0;
+  z-index: 1; /* above floral frame, behind cards */
   animation: driftUp linear forwards;
 }
 @keyframes driftUp{
@@ -408,138 +527,146 @@ body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-colo
   15%{ opacity: .18; }
   to{ transform: translateY(-110vh) translateX(40px) scale(1.15); opacity: 0; }
 }
-
 </style>
 </head>
 
 <body data-theme="welcome">
-<div class="wrap">
+  <div class="floralFrame"></div>
 
-<!-- LEFT -->
-<section class="card">
-  <h1>Hey Avery 💖</h1>
-  <p>Little quest time. Beat the games to unlock my question 😳</p>
+  <div class="wrap">
 
-  <div class="pillrow">
-    <span class="pill">About us 🫶</span>
-    <span class="pill">Cute + interactive</span>
-    <span class="pill">Unlock the surprise 💌</span>
-  </div>
+    <!-- LEFT -->
+    <section class="card">
+      <h1>Hey Avery 💖</h1>
+      <p>Little quest time. Beat the games to unlock my question 😳</p>
 
-  <div class="stageNav" id="stageNav"></div>
-
-  <!-- Stage 0: Welcome -->
-  <div id="stage0" class="stageScene">
-    <div class="welcomeHero">
-      <div class="plushFrame">
-        <img class="plushImg" src="jellycat.png" alt="A cute plush friend" />
+      <div class="pillrow">
+        <span class="pill">About us 🫶</span>
+        <span class="pill">Cute + interactive</span>
+        <span class="pill">Unlock the surprise 💌</span>
       </div>
 
-      <h2 style="margin:0">Welcome, Avery 💖</h2>
-      <p style="margin:0; opacity:.88">
-        I made you a tiny quest. Beat the games to unlock a question I’ve been saving 😳
+      <div class="stageNav" id="stageNav"></div>
+
+      <!-- Stage 0: Welcome -->
+      <div id="stage0" class="stageScene">
+        <div class="welcomeHero">
+          <div class="plushFrame">
+            <img class="plushImg" src="jellycat.png" alt="A cute plush friend" />
+          </div>
+
+          <h2 style="margin:0">Welcome, Avery 💖</h2>
+          <p style="margin:0; opacity:.88">
+            I made you a tiny quest. Beat the games to unlock a question I’ve been saving 😳
+          </p>
+
+          <div class="row" style="justify-content:center; margin-top:10px">
+            <button class="bigbtn primary" id="startQuestBtn">Start the quest 💌</button>
+          </div>
+
+          <p class="small" style="margin:0">
+            If the plush image doesn’t show: make sure <b>jellycat.png</b> is next to <b>index.html</b>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Stage 1: Crossword -->
+      <div id="stage1" class="stageScene" style="display:none">
+        <h2>Game 1: Crossword</h2>
+        <p class="small">Rows turn pink when correct.</p>
+        <div class="cwGrid" id="cwGrid"></div>
+        <div class="clues" id="clues"></div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="bigbtn primary" id="cwCheckBtn">Check</button>
+          <button class="bigbtn ghost" id="cwClearBtn">Clear</button>
+        </div>
+      </div>
+
+      <!-- Stage 2: Quiz -->
+      <div id="stage2" class="stageScene" style="display:none">
+        <h2>Game 2: Mini Quiz</h2>
+        <p class="small">Pick the right answers 😌</p>
+
+        <div class="quizBox" id="quizBox"></div>
+
+        <div class="quizInfo">
+          <span>Attempt 1 of 1</span>
+          <span>3 questions • 3 points</span>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="bigbtn primary" id="quizSubmitBtn">Submit</button>
+          <button class="bigbtn ghost" id="quizResetBtn">Clear Answers</button>
+        </div>
+      </div>
+
+      <!-- Stage 3: Heart Catch -->
+      <div id="stage3" class="stageScene" style="display:none">
+        <h2>Game 3: Heart Catch</h2>
+        <p class="small">Click hearts before they fall. Reach the goal to win.</p>
+        <div class="hud">
+          <div>Score: <span id="score">0</span>/<span id="goal">10</span></div>
+          <div>Time: <span id="time">15</span>s</div>
+        </div>
+        <div class="arena" id="arena" aria-label="Heart catch arena"></div>
+        <div class="row" style="margin-top:12px">
+          <button class="bigbtn primary" id="startCatchBtn">Start</button>
+          <button class="bigbtn ghost" id="resetCatchBtn">Reset</button>
+        </div>
+      </div>
+
+      <!-- Stage 4: Slide Puzzle -->
+      <div id="stage4" class="stageScene" style="display:none">
+        <h2>Game 4: Slide Puzzle</h2>
+        <p class="small">Slide the tiles to rebuild our photo 🫶</p>
+
+        <div class="puzzleWrap">
+          <div class="puzzleMeta">
+            <div>Moves: <span id="moves">0</span></div>
+            <div>Status: <span id="puzzleStatus">Not started</span></div>
+          </div>
+
+          <div class="puzzleBoard" id="puzzleBoard" aria-label="Slide puzzle board"></div>
+
+          <div class="row" style="margin-top:12px">
+            <button class="bigbtn primary" id="shufflePuzzleBtn">Shuffle</button>
+            <button class="bigbtn ghost" id="resetPuzzleBtn">Reset</button>
+          </div>
+        </div>
+
+        <p class="small">Put a photo named <b>photo.jpg</b> next to <b>index.html</b>.</p>
+      </div>
+
+      <p class="small" style="margin-top:14px">
+        Tip: You can customize quiz questions & heart goal inside the code near “CUSTOMIZE”.
       </p>
+    </section>
 
-      <div class="row" style="justify-content:center; margin-top:10px">
-        <button class="bigbtn primary" id="startQuestBtn">Start the quest 💌</button>
+    <!-- RIGHT -->
+    <section class="card">
+      <div class="lockedBadge" id="lockBadge">🔒 Locked — beat all games</div>
+
+      <div class="final" id="finalBox">
+        <h2>A question for you…</h2>
+        <p id="finalBody">It’s locked until you finish the quest 💌</p>
+
+        <div class="btnrow" id="btnRow">
+          <button class="bigbtn primary" id="yesBtn" disabled>YES 💘</button>
+          <button class="bigbtn ghost" id="maybeBtn" disabled>maybe 🙈</button>
+        </div>
       </div>
 
-      <p class="small" style="margin:0">
-        If the plush image doesn’t show: make sure <b>jellycat.png</b> is next to <b>index.html</b>.
-      </p>
-    </div>
-  </div>
-
-  <!-- Stage 1: Crossword -->
-  <div id="stage1" class="stageScene" style="display:none">
-    <h2>Game 1: Crossword</h2>
-    <p class="small">Rows turn pink when correct.</p>
-    <div class="cwGrid" id="cwGrid"></div>
-    <div class="clues" id="clues"></div>
-
-    <div class="row" style="margin-top:12px">
-      <button class="bigbtn primary" id="cwCheckBtn">Check</button>
-      <button class="bigbtn ghost" id="cwClearBtn">Clear</button>
-    </div>
-  </div>
-
-  <!-- Stage 2: Quiz -->
-  <div id="stage2" class="stageScene" style="display:none">
-    <h2>Game 2: Mini Quiz</h2>
-    <p class="small">Pick the right answers 😌</p>
-    <div class="quizBox" id="quizBox"></div>
-    <div class="row" style="margin-top:12px">
-      <button class="bigbtn primary" id="quizSubmitBtn">Submit</button>
-      <button class="bigbtn ghost" id="quizResetBtn">Reset</button>
-    </div>
-  </div>
-
-  <!-- Stage 3: Heart Catch -->
-  <div id="stage3" class="stageScene" style="display:none">
-    <h2>Game 3: Heart Catch</h2>
-    <p class="small">Click hearts before they fall. Reach the goal to win.</p>
-    <div class="hud">
-      <div>Score: <span id="score">0</span>/<span id="goal">10</span></div>
-      <div>Time: <span id="time">15</span>s</div>
-    </div>
-    <div class="arena" id="arena" aria-label="Heart catch arena"></div>
-    <div class="row" style="margin-top:12px">
-      <button class="bigbtn primary" id="startCatchBtn">Start</button>
-      <button class="bigbtn ghost" id="resetCatchBtn">Reset</button>
-    </div>
-  </div>
-
-  <!-- Stage 4: Slide Puzzle -->
-  <div id="stage4" class="stageScene" style="display:none">
-    <h2>Game 4: Slide Puzzle</h2>
-    <p class="small">Slide the tiles to rebuild our photo 🫶</p>
-
-    <div class="puzzleWrap">
-      <div class="puzzleMeta">
-        <div>Moves: <span id="moves">0</span></div>
-        <div>Status: <span id="puzzleStatus">Not started</span></div>
+      <div class="final" id="successBox" style="display:none">
+        <h2 id="successHeader">AVERY SAID YES 😭💖</h2>
+        <p id="successBody">Okay wow. Best day ever. 🥰 I can’t wait to be your Valentine.</p>
+        <button class="bigbtn primary" id="restartAllBtn">Play again</button>
       </div>
+    </section>
 
-      <div class="puzzleBoard" id="puzzleBoard" aria-label="Slide puzzle board"></div>
-
-      <div class="row" style="margin-top:12px">
-        <button class="bigbtn primary" id="shufflePuzzleBtn">Shuffle</button>
-        <button class="bigbtn ghost" id="resetPuzzleBtn">Reset</button>
-      </div>
-    </div>
-
-    <p class="small">Put a photo named <b>photo.jpg</b> next to <b>index.html</b>.</p>
   </div>
 
-  <p class="small" style="margin-top:14px">
-    Tip: You can customize quiz questions & heart goal inside the code near “CUSTOMIZE”.
-  </p>
-</section>
-
-<!-- RIGHT -->
-<section class="card">
-  <div class="lockedBadge" id="lockBadge">🔒 Locked — beat all games</div>
-
-  <div class="final" id="finalBox">
-    <h2>A question for you…</h2>
-    <p id="finalBody">It’s locked until you finish the quest 💌</p>
-
-    <div class="btnrow" id="btnRow">
-      <button class="bigbtn primary" id="yesBtn" disabled>YES 💘</button>
-      <button class="bigbtn ghost" id="maybeBtn" disabled>maybe 🙈</button>
-    </div>
-  </div>
-
-  <div class="final" id="successBox" style="display:none">
-    <h2 id="successHeader">AVERY SAID YES 😭💖</h2>
-    <p id="successBody">Okay wow. Best day ever. 🥰 I can’t wait to be your Valentine.</p>
-    <button class="bigbtn primary" id="restartAllBtn">Play again</button>
-  </div>
-</section>
-
-</div>
-
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
 <script>
 /* =========================
@@ -553,18 +680,24 @@ const CROSSWORD = [
 
 const QUIZ = [
   {
-    q: "What’s the vibe of us?",
-    choices: ["Chaotic cute", "Serious business", "Roommates only", "NPCs"],
+    q: "Where did we have our first date?",
+    choices: ["Panera Bread", "Chili's", "Olive Garden", "In-N-Out"],
     correctIndex: 0
   },
   {
-    q: "What do I want to be to you on Feb 14?",
-    choices: ["Your Valentine", "Your plumber", "Your accountant", "Your Uber driver"],
+    q: "What was our first trip together?",
+    choices: ["Austin", "Corpus Christi", "New York", "Boston"],
     correctIndex: 0
   },
   {
-    q: "What do you deserve?",
-    choices: ["Everything good", "Mediocre vibes", "Nothing", "A lecture"],
+    q: "What do I love most about you?",
+    choices: [
+      "All of the above",
+      "Your sweet smile",
+      "Your caring nature",
+      "Your unstoppable work ethic",
+      "Your amazing sense of humor"
+    ],
     correctIndex: 0
   }
 ];
@@ -573,8 +706,8 @@ const CATCH_GOAL = 10;
 const CATCH_TIME = 15;
 
 // Images must be next to index.html
-const PUZZLE_IMG = "photo.jpg";     // slide puzzle photo
-const WELCOME_IMG = "jellycat.png"; // welcome plush (used in HTML)
+const PUZZLE_IMG = "photo.jpg";
+const WELCOME_IMG = "jellycat.png"; // referenced in HTML
 
 const FINAL_QUESTION = "Avery… will you be my Valentine? 💌";
 const AFTER_YES_TITLE = "AVERY SAID YES 😭💖";
@@ -604,6 +737,34 @@ function confettiHearts(count=28){
   }
 }
 
+/* Quiz submitting helpers */
+const quizBox = document.getElementById("quizBox");
+const quizSubmitBtn = document.getElementById("quizSubmitBtn");
+const quizResetBtn = document.getElementById("quizResetBtn");
+
+function setQuizControlsDisabled(disabled){
+  quizSubmitBtn.disabled = disabled;
+  quizResetBtn.disabled = disabled;
+
+  quizBox.querySelectorAll(".choice").forEach(btn=>{
+    btn.disabled = disabled;
+    btn.style.pointerEvents = disabled ? "none" : "auto";
+    btn.style.opacity = disabled ? 0.85 : 1;
+  });
+}
+
+function showSubmittingOverlay(){
+  const overlay = document.createElement("div");
+  overlay.className = "submittingOverlay";
+  overlay.innerHTML = `<div class="spinner"></div><div>Submitting…</div>`;
+  overlay.id = "submittingOverlay";
+  quizBox.appendChild(overlay);
+}
+
+function hideSubmittingOverlay(){
+  document.getElementById("submittingOverlay")?.remove();
+}
+
 /* =========================
    STAGES + THEMES
 ========================= */
@@ -619,8 +780,7 @@ const stageEls = [
 const themes = ["welcome", "love-letter", "pop-quiz", "arcade", "polaroid"];
 
 let stage = 0; // 0..4
-// game completion for games 1..4 (crossword, quiz, catch, puzzle)
-let stageDone = [false,false,false,false]; // indexes 0..3
+let stageDone = [false,false,false,false]; // games 1..4
 
 function renderStageNav(){
   stageNav.innerHTML = "";
@@ -628,11 +788,9 @@ function renderStageNav(){
 
   labels.forEach((lab, i)=>{
     const step = document.createElement("div");
-
     const done = (i === 0) ? false : stageDone[i-1];
     step.className = "step" + (done ? " done" : "") + (stage===i ? " active" : "");
     step.textContent = lab;
-
     stageNav.appendChild(step);
   });
 }
@@ -648,9 +806,7 @@ function markStageDone(gameIndex){
   stageDone[gameIndex] = true;
   renderStageNav();
 
-  // gameIndex 0..3 corresponds to stage 1..4
   const stageIndex = gameIndex + 1;
-
   if (gameIndex < stageDone.length - 1){
     goToStage(stageIndex + 1);
   } else {
@@ -670,7 +826,7 @@ const cwGrid = document.getElementById("cwGrid");
 const clues = document.getElementById("clues");
 const cwCheckBtn = document.getElementById("cwCheckBtn");
 const cwClearBtn = document.getElementById("cwClearBtn");
-let cwRows = []; // {rowEl, inputs, answer, ok}
+let cwRows = [];
 
 function buildCrossword(){
   cwGrid.innerHTML = "";
@@ -768,12 +924,10 @@ cwClearBtn.onclick = clearCrossword;
 /* =========================
    GAME 2: QUIZ
 ========================= */
-const quizBox = document.getElementById("quizBox");
-const quizSubmitBtn = document.getElementById("quizSubmitBtn");
-const quizResetBtn = document.getElementById("quizResetBtn");
-let quizState = []; // selected indices
+let quizState = [];
 
 function buildQuiz(){
+  hideSubmittingOverlay();
   quizBox.innerHTML = "";
   quizState = Array(QUIZ.length).fill(null);
 
@@ -801,7 +955,7 @@ function buildQuiz(){
           ch.style.outline = "none";
         });
         quizState[qi] = ci;
-        b.style.outline = "3px solid rgba(255,77,134,.25)";
+        b.style.outline = "3px solid rgba(233,106,106,.22)";
       };
 
       choices.appendChild(b);
@@ -814,36 +968,47 @@ function buildQuiz(){
 
 function gradeQuiz(){
   if(quizState.some(v=>v===null)){
-    showToast("Answer all 3 😌");
+    showToast("Answer all of them 😌");
     return;
   }
 
-  let allCorrect = true;
-  [...quizBox.querySelectorAll(".q")].forEach((qEl, qi)=>{
-    const item = QUIZ[qi];
-    const chosen = quizState[qi];
-    const choiceBtns = [...qEl.querySelectorAll(".choice")];
+  setQuizControlsDisabled(true);
+  showSubmittingOverlay();
 
-    choiceBtns.forEach((btn, ci)=>{
-      btn.classList.remove("correct","wrong");
-      if(ci === item.correctIndex) btn.classList.add("correct");
-      if(ci === chosen && chosen !== item.correctIndex) btn.classList.add("wrong");
+  const delay = 800;
+
+  setTimeout(()=>{
+    hideSubmittingOverlay();
+
+    let allCorrect = true;
+    [...quizBox.querySelectorAll(".q")].forEach((qEl, qi)=>{
+      const item = QUIZ[qi];
+      const chosen = quizState[qi];
+      const choiceBtns = [...qEl.querySelectorAll(".choice")];
+
+      choiceBtns.forEach((btn, ci)=>{
+        btn.classList.remove("correct","wrong");
+        if(ci === item.correctIndex) btn.classList.add("correct");
+        if(ci === chosen && chosen !== item.correctIndex) btn.classList.add("wrong");
+      });
+
+      if(chosen !== item.correctIndex) allCorrect = false;
     });
 
-    if(chosen !== item.correctIndex) allCorrect = false;
-  });
+    setQuizControlsDisabled(false);
 
-  if(allCorrect){
-    showToast("Perfect 😭💖");
-    confettiHearts(18);
-    markStageDone(1);
-  } else {
-    showToast("Close… try again 💗");
-  }
+    if(allCorrect){
+      showToast("Perfect 😭💖");
+      confettiHearts(18);
+      markStageDone(1);
+    } else {
+      showToast("Close… try again 💗");
+    }
+  }, delay);
 }
 
 quizSubmitBtn.onclick = gradeQuiz;
-quizResetBtn.onclick = ()=>{ buildQuiz(); showToast("Reset ✨"); };
+quizResetBtn.onclick = ()=>{ buildQuiz(); showToast("Cleared ✨"); };
 
 /* =========================
    GAME 3: HEART CATCH
@@ -946,7 +1111,6 @@ const resetPuzzleBtn = document.getElementById("resetPuzzleBtn");
 const movesEl = document.getElementById("moves");
 const puzzleStatusEl = document.getElementById("puzzleStatus");
 
-// tiles 0..8, where 8 is blank. solved: [0,1,2,3,4,5,6,7,8]
 let puzzle = [];
 let moves = 0;
 
@@ -991,10 +1155,6 @@ function renderPuzzle(){
     } else {
       const tileR = Math.floor(tile/3);
       const tileC = tile%3;
-
-      // Correct slicing for 3x3:
-      // background-size: 300% 300%
-      // position: 0%, 50%, 100%
       btn.style.backgroundImage = `url('${PUZZLE_IMG}')`;
       btn.style.backgroundPosition = `${tileC * 50}% ${tileR * 50}%`;
 
@@ -1026,7 +1186,6 @@ function resetPuzzle(){
 }
 
 function isSolvable(arr){
-  // For odd grid width (3), solvable iff inversion count even (ignoring blank)
   let inv = 0;
   const a = arr.filter(x=>x!==8);
   for(let i=0;i<a.length;i++){
@@ -1125,6 +1284,7 @@ function resetFinalUI(){
   successBox.style.display = "none";
 }
 
+/* Ambient hearts */
 function startAmbientHearts(){
   const hearts = ["♡","♥","💗","💖"];
   setInterval(()=>{
@@ -1151,4 +1311,4 @@ startAmbientHearts();
 goToStage(0);
 </script>
 </body>
-</html>
+</html
