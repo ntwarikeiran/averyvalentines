@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For Avery 💖</title>
+
+<style>
+:root{
+  --accent:#ff4d86;
+  --accent2:#ff78a7;
+  --bgA:#ffedf3;
+  --bgB:#ffe3ee;
+  --panel: rgba(255,255,255,.72);
+  --ink:#2b2b2b;
+  --shadow:0 20px 40px rgba(0,0,0,.12);
+  --r:22px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  color: var(--ink);
+  transition: background 400ms ease, color 250ms ease;
+  background:
+    radial-gradient(1000px 600px at 20% 10%, rgba(255,77,134,.18) 0%, transparent 55%),
+    radial-gradient(900px 500px at 90% 20%, rgba(255,120,167,.16) 0%, transparent 50%),
+    linear-gradient(135deg, var(--bgA), var(--bgB));
+}
+
+/* ===== Themes per stage ===== */
+body[data-theme="welcome"]{
+  --bgA:#fff7fb; --bgB:#ffe9f3; --accent:#ff4d86; --accent2:#ff78a7;
+  --panel: rgba(255,255,255,.78); --ink:#2b2b2b;
+}
+body[data-theme="love-letter"]{
+  --bgA:#fff2f7; --bgB:#ffe6f1; --accent:#ff4d86; --accent2:#ff78a7;
+  --panel: rgba(255,255,255,.72); --ink:#2b2b2b;
+}
+body[data-theme="pop-quiz"]{
+  --bgA:#f2f7ff; --bgB:#e7f0ff; --accent:#3b82f6; --accent2:#60a5fa;
+  --panel: rgba(255,255,255,.74); --ink:#1f2937;
+}
+body[data-theme="arcade"]{
+  --bgA:#0b1020; --bgB:#1b1142; --accent:#a855f7; --accent2:#f472b6;
+  --panel: rgba(255,255,255,.10); --ink:#f8fafc;
+}
+body[data-theme="polaroid"]{
+  --bgA:#fff8e7; --bgB:#ffeecb; --accent:#f59e0b; --accent2:#fb7185;
+  --panel: rgba(255,255,255,.78); --ink:#2b2b2b;
+}
+
+/* Enhance theme background using current accent colors */
+body{
+  background:
+    radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent) 18%, white) 0%, transparent 55%),
+    radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--accent2) 16%, white) 0%, transparent 50%),
+    linear-gradient(135deg, var(--bgA), var(--bgB));
+}
+
+.wrap{
+  width:min(1040px,92vw);
+  display:grid;
+  gap:18px;
+  grid-template-columns:1.15fr .85fr;
+  align-items:start;
+}
+@media(max-width:920px){.wrap{grid-template-columns:1fr}}
+
+.card{
+  background:var(--panel);
+  backdrop-filter:blur(10px);
+  border-radius:var(--r);
+  padding:22px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.7);
+}
+body[data-theme="arcade"] .card{ border-color: rgba(255,255,255,.18); }
+
+h1{margin:0 0 6px; font-size:clamp(26px,4vw,36px)}
+h2{margin:0 0 10px; font-size:clamp(18px,3vw,24px)}
+p{margin:8px 0; line-height:1.4}
+
+.pillrow{display:flex;gap:10px;flex-wrap:wrap; margin:10px 0 12px}
+.pill{
+  padding:6px 12px;
+  border-radius:999px;
+  background: color-mix(in srgb, var(--accent) 12%, white);
+  font-size:13px;
+  border:1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.small{font-size:13px; opacity:.78}
+
+.bigbtn{
+  border:0;
+  padding:12px 16px;
+  border-radius:16px;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .08s ease;
+}
+.bigbtn:active{transform:translateY(1px) scale(.99)}
+.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+  box-shadow:0 12px 25px rgba(0,0,0,.12);
+}
+.ghost{
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(0,0,0,.08);
+  color: var(--ink);
+}
+body[data-theme="arcade"] .ghost{
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.22);
+}
+
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
+.lockedBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,.08);
+  font-size:13px;
+  width:max-content;
+}
+body[data-theme="arcade"] .lockedBadge{ background: rgba(255,255,255,.12); }
+
+/* Stage nav */
+.stageNav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:10px 0 14px;
+}
+.step{
+  font-size:13px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.08);
+  background:rgba(255,255,255,.65);
+}
+body[data-theme="arcade"] .step{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+.step.done{
+  border-color: rgba(40,167,69,.25);
+  background: rgba(40,167,69,.10);
+}
+.step.active{
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, white);
+}
+
+/* Stage enter animation */
+.stageScene{ animation: sceneIn 260ms ease both; }
+@keyframes sceneIn{
+  from{ opacity:0; transform: translateY(8px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+/* ===== Welcome page ===== */
+.welcomeHero{
+  display:grid;
+  gap:14px;
+  align-items:center;
+  text-align:center;
+  padding: 10px 6px 2px;
+}
+.plushFrame{
+  width:min(320px, 80vw);
+  margin: 0 auto;
+  padding:14px;
+  border-radius:22px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 18px 35px rgba(0,0,0,.12);
+}
+.plushImg{
+  width: 100%;
+  height: auto;
+  display:block;
+  border-radius:18px;
+  animation: plushBob 2.6s ease-in-out infinite;
+}
+@keyframes plushBob{
+  0%,100%{ transform: translateY(0px) rotate(-1deg); }
+  50%{ transform: translateY(-8px) rotate(1deg); }
+}
+
+/* ===== Crossword ===== */
+.cwGrid{display:flex; flex-direction:column; gap:10px; margin-top:10px}
+.cwRow{ display:flex; gap:10px; transition:.2s; }
+.cwRow.correct .cell{
+  background: color-mix(in srgb, var(--accent) 15%, white);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.cwRow.correct{ animation: pop .22s ease }
+@keyframes pop{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.03)}
+  100%{transform:scale(1)}
+}
+.cell{
+  width:52px;
+  height:56px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.10);
+  background:rgba(255,255,255,.85);
+  display:grid;
+  place-items:center;
+  position:relative;
+  box-shadow:0 10px 18px rgba(0,0,0,.08);
+}
+body[data-theme="arcade"] .cell{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.18); }
+.cell input{
+  width:100%;
+  height:100%;
+  border:0;
+  background:none;
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  text-transform:uppercase;
+  outline:none;
+  border-radius:14px;
+  color: var(--ink);
+}
+.cell input:focus{ box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
+.number{
+  position:absolute;
+  top:5px;
+  left:7px;
+  font-size:11px;
+  opacity:.6;
+  font-weight:900;
+}
+.clues{margin-top:10px; font-size:14px}
+.clue{display:flex; gap:10px; padding:5px 0; border-top:1px solid rgba(0,0,0,.06)}
+.clue:first-child{border-top:0}
+.clue b{min-width:18px}
+body[data-theme="arcade"] .clue{ border-top-color: rgba(255,255,255,.12); }
+
+/* ===== Quiz ===== */
+.quizBox{
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:18px;
+  padding:14px;
+}
+body[data-theme="arcade"] .quizBox{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+.q{ padding:10px 0; border-top:1px solid rgba(0,0,0,.06); }
+.q:first-child{border-top:0}
+.q .qtitle{font-weight:900; margin-bottom:8px}
+.choices{display:flex; gap:10px; flex-wrap:wrap}
+.choice{
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.10);
+  background:#fff;
+  cursor:pointer;
+  font-weight:800;
+  color: #111;
+}
+body[data-theme="arcade"] .choice{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.20); color: var(--ink); }
+.choice.correct{border-color: rgba(40,167,69,.35); background: rgba(40,167,69,.10)}
+.choice.wrong{border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: color-mix(in srgb, var(--accent) 10%, white); }
+
+/* ===== Heart Catch ===== */
+.arena{
+  position:relative;
+  height:280px;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.08);
+  background:rgba(255,255,255,.65);
+  overflow:hidden;
+}
+body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+.hud{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:10px 0 8px;
+  font-weight:800;
+}
+.falling{
+  position:absolute;
+  top:-30px;
+  user-select:none;
+  cursor:pointer;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,.15));
+  animation: fall linear forwards;
+}
+@keyframes fall{
+  to{ transform: translateY(340px) rotate(360deg); opacity: 0.95; }
+}
+
+/* ===== Slide Puzzle ===== */
+.puzzleWrap{ display:flex; flex-direction:column; gap:10px; }
+.puzzleMeta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-weight:800;
+}
+.puzzleBoard{
+  width: 300px;
+  height: 300px;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.08);
+  background:rgba(255,255,255,.65);
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap:8px;
+  padding:8px;
+  overflow:hidden;
+}
+@media(max-width:420px){
+  .puzzleBoard{ width: 270px; height: 270px; }
+}
+.tileBtn{
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:14px;
+  background:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 18px rgba(0,0,0,.08);
+  background-repeat:no-repeat;
+  background-size: 300% 300%; /* IMPORTANT: slice into 3x3 */
+  transition: transform .08s ease;
+}
+.tileBtn:active{ transform: translateY(1px) scale(.99); }
+.tileBtn.blank{
+  background:none;
+  border:1px dashed rgba(0,0,0,.12);
+  box-shadow:none;
+  cursor:default;
+}
+
+/* Right panel */
+.final{
+  margin-top:14px;
+  padding:18px;
+  border-radius:18px;
+  border:1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, white);
+}
+.btnrow{display:flex;gap:12px;position:relative;min-height:60px}
+#maybeBtn{position:relative}
+
+/* Toast + confetti hearts */
+.toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000c;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  opacity:0;
+  transition:.2s;
+  pointer-events:none;
+  font-weight:700;
+}
+.toast.show{opacity:1}
+.confetti{
+  position:fixed;
+  top:-20px;
+  animation: fallConf linear forwards;
+  pointer-events:none;
+}
+@keyframes fallConf{
+  to{transform:translateY(110vh) rotate(360deg); opacity:0}
+}
+</style>
+</head>
+
+<body data-theme="welcome">
+<div class="wrap">
+
+<!-- LEFT -->
+<section class="card">
+  <h1>Hey Avery 💖</h1>
+  <p>Little quest time. Beat the games to unlock my question 😳</p>
+
+  <div class="pillrow">
+    <span class="pill">About us 🫶</span>
+    <span class="pill">Cute + interactive</span>
+    <span class="pill">Unlock the surprise 💌</span>
+  </div>
+
+  <div class="stageNav" id="stageNav"></div>
+
+  <!-- Stage 0: Welcome -->
+  <div id="stage0" class="stageScene">
+    <div class="welcomeHero">
+      <div class="plushFrame">
+        <img class="plushImg" src="jellycat.png" alt="A cute plush friend" />
+      </div>
+
+      <h2 style="margin:0">Welcome, Avery 💖</h2>
+      <p style="margin:0; opacity:.88">
+        I made you a tiny quest. Beat the games to unlock a question I’ve been saving 😳
+      </p>
+
+      <div class="row" style="justify-content:center; margin-top:10px">
+        <button class="bigbtn primary" id="startQuestBtn">Start the quest 💌</button>
+      </div>
+
+      <p class="small" style="margin:0">
+        If the plush image doesn’t show: make sure <b>jellycat.png</b> is next to <b>index.html</b>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Stage 1: Crossword -->
+  <div id="stage1" class="stageScene" style="display:none">
+    <h2>Game 1: Crossword</h2>
+    <p class="small">Rows turn pink when correct.</p>
+    <div class="cwGrid" id="cwGrid"></div>
+    <div class="clues" id="clues"></div>
+
+    <div class="row" style="margin-top:12px">
+      <button class="bigbtn primary" id="cwCheckBtn">Check</button>
+      <button class="bigbtn ghost" id="cwClearBtn">Clear</button>
+    </div>
+  </div>
+
+  <!-- Stage 2: Quiz -->
+  <div id="stage2" class="stageScene" style="display:none">
+    <h2>Game 2: Mini Quiz</h2>
+    <p class="small">Pick the right answers 😌</p>
+    <div class="quizBox" id="quizBox"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="bigbtn primary" id="quizSubmitBtn">Submit</button>
+      <button class="bigbtn ghost" id="quizResetBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- Stage 3: Heart Catch -->
+  <div id="stage3" class="stageScene" style="display:none">
+    <h2>Game 3: Heart Catch</h2>
+    <p class="small">Click hearts before they fall. Reach the goal to win.</p>
+    <div class="hud">
+      <div>Score: <span id="score">0</span>/<span id="goal">10</span></div>
+      <div>Time: <span id="time">15</span>s</div>
+    </div>
+    <div class="arena" id="arena" aria-label="Heart catch arena"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="bigbtn primary" id="startCatchBtn">Start</button>
+      <button class="bigbtn ghost" id="resetCatchBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- Stage 4: Slide Puzzle -->
+  <div id="stage4" class="stageScene" style="display:none">
+    <h2>Game 4: Slide Puzzle</h2>
+    <p class="small">Slide the tiles to rebuild our photo 🫶</p>
+
+    <div class="puzzleWrap">
+      <div class="puzzleMeta">
+        <div>Moves: <span id="moves">0</span></div>
+        <div>Status: <span id="puzzleStatus">Not started</span></div>
+      </div>
+
+      <div class="puzzleBoard" id="puzzleBoard" aria-label="Slide puzzle board"></div>
+
+      <div class="row" style="margin-top:12px">
+        <button class="bigbtn primary" id="shufflePuzzleBtn">Shuffle</button>
+        <button class="bigbtn ghost" id="resetPuzzleBtn">Reset</button>
+      </div>
+    </div>
+
+    <p class="small">Put a photo named <b>photo.jpg</b> next to <b>index.html</b>.</p>
+  </div>
+
+  <p class="small" style="margin-top:14px">
+    Tip: You can customize quiz questions & heart goal inside the code near “CUSTOMIZE”.
+  </p>
+</section>
+
+<!-- RIGHT -->
+<section class="card">
+  <div class="lockedBadge" id="lockBadge">🔒 Locked — beat all games</div>
+
+  <div class="final" id="finalBox">
+    <h2>A question for you…</h2>
+    <p id="finalBody">It’s locked until you finish the quest 💌</p>
+
+    <div class="btnrow" id="btnRow">
+      <button class="bigbtn primary" id="yesBtn" disabled>YES 💘</button>
+      <button class="bigbtn ghost" id="maybeBtn" disabled>maybe 🙈</button>
+    </div>
+  </div>
+
+  <div class="final" id="successBox" style="display:none">
+    <h2 id="successHeader">AVERY SAID YES 😭💖</h2>
+    <p id="successBody">Okay wow. Best day ever. 🥰 I can’t wait to be your Valentine.</p>
+    <button class="bigbtn primary" id="restartAllBtn">Play again</button>
+  </div>
+</section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================
+   CUSTOMIZE
+========================= */
+const CROSSWORD = [
+  { clue: "Our favorite date spot", answer: "Carrollton" },
+  { clue: "Our favorite song",      answer: "The Dress" },
+  { clue: "Our favorite trip",      answer: "New York" }
+];
+
+const QUIZ = [
+  {
+    q: "What’s the vibe of us?",
+    choices: ["Chaotic cute", "Serious business", "Roommates only", "NPCs"],
+    correctIndex: 0
+  },
+  {
+    q: "What do I want to be to you on Feb 14?",
+    choices: ["Your Valentine", "Your plumber", "Your accountant", "Your Uber driver"],
+    correctIndex: 0
+  },
+  {
+    q: "What do you deserve?",
+    choices: ["Everything good", "Mediocre vibes", "Nothing", "A lecture"],
+    correctIndex: 0
+  }
+];
+
+const CATCH_GOAL = 10;
+const CATCH_TIME = 15;
+
+// Images must be next to index.html
+const PUZZLE_IMG = "photo.jpg";     // slide puzzle photo
+const WELCOME_IMG = "jellycat.png"; // welcome plush (used in HTML)
+
+const FINAL_QUESTION = "Avery… will you be my Valentine? 💌";
+const AFTER_YES_TITLE = "AVERY SAID YES 😭💖";
+const AFTER_YES_BODY  = "Okay wow. Best day ever. 🥰 I can’t wait to be your Valentine.";
+
+/* =========================
+   HELPERS
+========================= */
+const normalize = s => (s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+const toast = document.getElementById("toast");
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"), 1200);
+}
+function confettiHearts(count=28){
+  const hearts = ["💖","💘","💝","💗","💕","💞"];
+  for(let i=0;i<count;i++){
+    const el = document.createElement("div");
+    el.className = "confetti";
+    el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    el.style.left = Math.random()*100 + "vw";
+    el.style.fontSize = (14+Math.random()*18) + "px";
+    el.style.animationDuration = (2.2+Math.random()*2.6) + "s";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 5200);
+  }
+}
+
+/* =========================
+   STAGES + THEMES
+========================= */
+const stageNav = document.getElementById("stageNav");
+const stageEls = [
+  document.getElementById("stage0"),
+  document.getElementById("stage1"),
+  document.getElementById("stage2"),
+  document.getElementById("stage3"),
+  document.getElementById("stage4")
+];
+
+const themes = ["welcome", "love-letter", "pop-quiz", "arcade", "polaroid"];
+
+let stage = 0; // 0..4
+// game completion for games 1..4 (crossword, quiz, catch, puzzle)
+let stageDone = [false,false,false,false]; // indexes 0..3
+
+function renderStageNav(){
+  stageNav.innerHTML = "";
+  const labels = ["0) Welcome", "1) Crossword", "2) Quiz", "3) Heart Catch", "4) Slide Puzzle"];
+
+  labels.forEach((lab, i)=>{
+    const step = document.createElement("div");
+
+    const done = (i === 0) ? false : stageDone[i-1];
+    step.className = "step" + (done ? " done" : "") + (stage===i ? " active" : "");
+    step.textContent = lab;
+
+    stageNav.appendChild(step);
+  });
+}
+
+function goToStage(i){
+  stage = i;
+  stageEls.forEach((el, idx)=> el.style.display = (idx===stage ? "block" : "none"));
+  document.body.setAttribute("data-theme", themes[i] || "welcome");
+  renderStageNav();
+}
+
+function markStageDone(gameIndex){
+  stageDone[gameIndex] = true;
+  renderStageNav();
+
+  // gameIndex 0..3 corresponds to stage 1..4
+  const stageIndex = gameIndex + 1;
+
+  if (gameIndex < stageDone.length - 1){
+    goToStage(stageIndex + 1);
+  } else {
+    unlockFinalIfAllDone();
+  }
+}
+
+/* =========================
+   WELCOME
+========================= */
+document.getElementById("startQuestBtn").onclick = () => goToStage(1);
+
+/* =========================
+   GAME 1: CROSSWORD
+========================= */
+const cwGrid = document.getElementById("cwGrid");
+const clues = document.getElementById("clues");
+const cwCheckBtn = document.getElementById("cwCheckBtn");
+const cwClearBtn = document.getElementById("cwClearBtn");
+let cwRows = []; // {rowEl, inputs, answer, ok}
+
+function buildCrossword(){
+  cwGrid.innerHTML = "";
+  clues.innerHTML = "";
+  cwRows = [];
+
+  CROSSWORD.forEach((q, ri)=>{
+    const rowEl = document.createElement("div");
+    rowEl.className = "cwRow";
+    const answer = normalize(q.answer);
+    const inputs = [];
+
+    for(let i=0;i<answer.length;i++){
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      if(i===0){
+        const n = document.createElement("div");
+        n.className = "number";
+        n.textContent = ri+1;
+        cell.appendChild(n);
+      }
+      const inp = document.createElement("input");
+      inp.maxLength = 1;
+
+      inp.addEventListener("input", ()=>{
+        inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g,"");
+        if(inp.value && i < inputs.length-1) inputs[i+1].focus();
+        updateCrosswordRow(ri);
+      });
+
+      inp.addEventListener("keydown", (e)=>{
+        if(e.key==="Backspace" && !inp.value && i>0) inputs[i-1].focus();
+        setTimeout(()=>updateCrosswordRow(ri), 0);
+        if(e.key==="Enter") checkCrosswordAll();
+      });
+
+      cell.appendChild(inp);
+      rowEl.appendChild(cell);
+      inputs.push(inp);
+    }
+
+    cwGrid.appendChild(rowEl);
+    cwRows.push({rowEl, inputs, answer, ok:false});
+
+    const c = document.createElement("div");
+    c.className = "clue";
+    c.innerHTML = `<b>${ri+1}.</b><div>${q.clue}</div>`;
+    clues.appendChild(c);
+  });
+
+  cwRows[0]?.inputs[0]?.focus();
+}
+
+function rowGuess(r){
+  return normalize(r.inputs.map(x=>x.value).join(""));
+}
+
+function updateCrosswordRow(i){
+  const r = cwRows[i];
+  const guess = rowGuess(r);
+  const correct = guess.length === r.answer.length && guess === r.answer;
+
+  if(correct && !r.ok){
+    r.ok = true;
+    r.rowEl.classList.add("correct");
+    showToast(`Clue ${i+1} ✔️`);
+  }
+  if(!correct && r.ok){
+    r.ok = false;
+    r.rowEl.classList.remove("correct");
+  }
+  if(cwRows.every(x=>x.ok)){
+    cwRows.forEach(x=>x.inputs.forEach(inp=>inp.disabled=true));
+    confettiHearts(18);
+    markStageDone(0);
+  }
+}
+
+function checkCrosswordAll(){
+  cwRows.forEach((_,i)=>updateCrosswordRow(i));
+  if(!cwRows.every(x=>x.ok)) showToast("Almost… try again 💗");
+}
+function clearCrossword(){
+  cwRows.forEach(r=>{
+    r.inputs.forEach(i=>i.value="");
+    r.ok=false;
+    r.rowEl.classList.remove("correct");
+  });
+  cwRows[0]?.inputs[0]?.focus();
+}
+
+cwCheckBtn.onclick = checkCrosswordAll;
+cwClearBtn.onclick = clearCrossword;
+
+/* =========================
+   GAME 2: QUIZ
+========================= */
+const quizBox = document.getElementById("quizBox");
+const quizSubmitBtn = document.getElementById("quizSubmitBtn");
+const quizResetBtn = document.getElementById("quizResetBtn");
+let quizState = []; // selected indices
+
+function buildQuiz(){
+  quizBox.innerHTML = "";
+  quizState = Array(QUIZ.length).fill(null);
+
+  QUIZ.forEach((item, qi)=>{
+    const qDiv = document.createElement("div");
+    qDiv.className = "q";
+
+    const title = document.createElement("div");
+    title.className = "qtitle";
+    title.textContent = `${qi+1}. ${item.q}`;
+    qDiv.appendChild(title);
+
+    const choices = document.createElement("div");
+    choices.className = "choices";
+
+    item.choices.forEach((txt, ci)=>{
+      const b = document.createElement("button");
+      b.className = "choice";
+      b.type = "button";
+      b.textContent = txt;
+
+      b.onclick = ()=>{
+        [...choices.children].forEach(ch=>{
+          ch.classList.remove("correct","wrong");
+          ch.style.outline = "none";
+        });
+        quizState[qi] = ci;
+        b.style.outline = "3px solid rgba(255,77,134,.25)";
+      };
+
+      choices.appendChild(b);
+    });
+
+    qDiv.appendChild(choices);
+    quizBox.appendChild(qDiv);
+  });
+}
+
+function gradeQuiz(){
+  if(quizState.some(v=>v===null)){
+    showToast("Answer all 3 😌");
+    return;
+  }
+
+  let allCorrect = true;
+  [...quizBox.querySelectorAll(".q")].forEach((qEl, qi)=>{
+    const item = QUIZ[qi];
+    const chosen = quizState[qi];
+    const choiceBtns = [...qEl.querySelectorAll(".choice")];
+
+    choiceBtns.forEach((btn, ci)=>{
+      btn.classList.remove("correct","wrong");
+      if(ci === item.correctIndex) btn.classList.add("correct");
+      if(ci === chosen && chosen !== item.correctIndex) btn.classList.add("wrong");
+    });
+
+    if(chosen !== item.correctIndex) allCorrect = false;
+  });
+
+  if(allCorrect){
+    showToast("Perfect 😭💖");
+    confettiHearts(18);
+    markStageDone(1);
+  } else {
+    showToast("Close… try again 💗");
+  }
+}
+
+quizSubmitBtn.onclick = gradeQuiz;
+quizResetBtn.onclick = ()=>{ buildQuiz(); showToast("Reset ✨"); };
+
+/* =========================
+   GAME 3: HEART CATCH
+========================= */
+const arena = document.getElementById("arena");
+const scoreEl = document.getElementById("score");
+const goalEl = document.getElementById("goal");
+const timeEl = document.getElementById("time");
+const startCatchBtn = document.getElementById("startCatchBtn");
+const resetCatchBtn = document.getElementById("resetCatchBtn");
+
+goalEl.textContent = String(CATCH_GOAL);
+
+let catchScore = 0;
+let catchTime = CATCH_TIME;
+let catchTimer = null;
+let spawnTimer = null;
+let running = false;
+
+function setCatchHUD(){
+  scoreEl.textContent = String(catchScore);
+  timeEl.textContent = String(catchTime);
+}
+
+function spawnHeart(){
+  const hearts = ["💖","💘","💝","💗","💕","💞"];
+  const h = document.createElement("div");
+  h.className = "falling";
+  h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+
+  const x = Math.random() * (arena.clientWidth - 30);
+  h.style.left = `${x}px`;
+  h.style.fontSize = `${18 + Math.random()*18}px`;
+  h.style.animationDuration = `${1.8 + Math.random()*1.6}s`;
+
+  h.onclick = ()=>{
+    if(!running) return;
+    catchScore += 1;
+    setCatchHUD();
+    h.remove();
+    if(catchScore >= CATCH_GOAL) winCatch();
+  };
+
+  h.addEventListener("animationend", ()=> h.remove());
+  arena.appendChild(h);
+}
+
+function startCatch(){
+  if(running) return;
+  running = true;
+  catchScore = 0;
+  catchTime = CATCH_TIME;
+  arena.innerHTML = "";
+  setCatchHUD();
+  showToast("Go go go! 💖");
+
+  catchTimer = setInterval(()=>{
+    catchTime -= 1;
+    setCatchHUD();
+    if(catchTime <= 0) endCatch(false);
+  }, 1000);
+
+  spawnTimer = setInterval(spawnHeart, 450);
+}
+
+function endCatch(won){
+  running = false;
+  clearInterval(catchTimer);
+  clearInterval(spawnTimer);
+  catchTimer = null;
+  spawnTimer = null;
+  if(!won) showToast("So close! Try again 💗");
+}
+
+function winCatch(){
+  endCatch(true);
+  showToast("You did it 😭💖");
+  confettiHearts(22);
+  markStageDone(2);
+}
+
+function resetCatch(){
+  endCatch(false);
+  arena.innerHTML = "";
+  catchScore = 0;
+  catchTime = CATCH_TIME;
+  setCatchHUD();
+  showToast("Reset ✨");
+}
+
+startCatchBtn.onclick = startCatch;
+resetCatchBtn.onclick = resetCatch;
+
+/* =========================
+   GAME 4: SLIDE PUZZLE (3x3)
+========================= */
+const puzzleBoard = document.getElementById("puzzleBoard");
+const shufflePuzzleBtn = document.getElementById("shufflePuzzleBtn");
+const resetPuzzleBtn = document.getElementById("resetPuzzleBtn");
+const movesEl = document.getElementById("moves");
+const puzzleStatusEl = document.getElementById("puzzleStatus");
+
+// tiles 0..8, where 8 is blank. solved: [0,1,2,3,4,5,6,7,8]
+let puzzle = [];
+let moves = 0;
+
+function setMoves(n){ moves = n; movesEl.textContent = String(moves); }
+function setPuzzleStatus(t){ puzzleStatusEl.textContent = t; }
+
+function solvedPuzzle(){
+  for(let i=0;i<9;i++) if(puzzle[i] !== i) return false;
+  return true;
+}
+function idxOfBlank(){ return puzzle.indexOf(8); }
+function neighbors(idx){
+  const res = [];
+  const r = Math.floor(idx/3), c = idx%3;
+  if(r>0) res.push(idx-3);
+  if(r<2) res.push(idx+3);
+  if(c>0) res.push(idx-1);
+  if(c<2) res.push(idx+1);
+  return res;
+}
+function canMove(tileIdx){
+  const b = idxOfBlank();
+  return neighbors(b).includes(tileIdx);
+}
+function swap(i,j){
+  const t = puzzle[i];
+  puzzle[i] = puzzle[j];
+  puzzle[j] = t;
+}
+
+function renderPuzzle(){
+  puzzleBoard.innerHTML = "";
+  for(let pos=0; pos<9; pos++){
+    const tile = puzzle[pos];
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tileBtn";
+
+    if(tile === 8){
+      btn.classList.add("blank");
+      btn.disabled = true;
+    } else {
+      const tileR = Math.floor(tile/3);
+      const tileC = tile%3;
+
+      // Correct slicing for 3x3:
+      // background-size: 300% 300%
+      // position: 0%, 50%, 100%
+      btn.style.backgroundImage = `url('${PUZZLE_IMG}')`;
+      btn.style.backgroundPosition = `${tileC * 50}% ${tileR * 50}%`;
+
+      btn.onclick = ()=>{
+        if(!canMove(pos)) return;
+        const b = idxOfBlank();
+        swap(pos, b);
+        setMoves(moves + 1);
+        renderPuzzle();
+
+        if(solvedPuzzle()){
+          setPuzzleStatus("Solved ✅");
+          confettiHearts(28);
+          showToast("Photo restored 😭💖");
+          [...puzzleBoard.querySelectorAll("button")].forEach(x=>x.disabled=true);
+          markStageDone(3);
+        }
+      };
+    }
+    puzzleBoard.appendChild(btn);
+  }
+}
+
+function resetPuzzle(){
+  puzzle = [0,1,2,3,4,5,6,7,8];
+  setMoves(0);
+  setPuzzleStatus("Not started");
+  renderPuzzle();
+}
+
+function isSolvable(arr){
+  // For odd grid width (3), solvable iff inversion count even (ignoring blank)
+  let inv = 0;
+  const a = arr.filter(x=>x!==8);
+  for(let i=0;i<a.length;i++){
+    for(let j=i+1;j<a.length;j++){
+      if(a[i] > a[j]) inv++;
+    }
+  }
+  return inv % 2 === 0;
+}
+
+function shufflePuzzle(){
+  let arr;
+  do {
+    arr = [...Array(9).keys()];
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  } while(!isSolvable(arr) || arr.every((v,i)=>v===i));
+
+  puzzle = arr;
+  setMoves(0);
+  setPuzzleStatus("Shuffled 🎲");
+  renderPuzzle();
+}
+
+shufflePuzzleBtn.onclick = shufflePuzzle;
+resetPuzzleBtn.onclick = resetPuzzle;
+
+/* =========================
+   FINAL UNLOCK
+========================= */
+const lockBadge = document.getElementById("lockBadge");
+const finalBody = document.getElementById("finalBody");
+const yesBtn = document.getElementById("yesBtn");
+const maybeBtn = document.getElementById("maybeBtn");
+const btnRow = document.getElementById("btnRow");
+const finalBox = document.getElementById("finalBox");
+const successBox = document.getElementById("successBox");
+const successHeader = document.getElementById("successHeader");
+const successBody = document.getElementById("successBody");
+const restartAllBtn = document.getElementById("restartAllBtn");
+
+function unlockFinalIfAllDone(){
+  if(!stageDone.every(Boolean)) return;
+
+  lockBadge.textContent = "🔓 Unlocked — you beat the quest 🫶";
+  lockBadge.style.background = "rgba(40,167,69,.12)";
+  lockBadge.style.border = "1px solid rgba(40,167,69,.25)";
+  finalBody.textContent = FINAL_QUESTION;
+  yesBtn.disabled = false;
+  maybeBtn.disabled = false;
+  confettiHearts(32);
+}
+
+yesBtn.onclick = ()=>{
+  finalBox.style.display = "none";
+  successBox.style.display = "block";
+  successHeader.textContent = AFTER_YES_TITLE;
+  successBody.textContent = AFTER_YES_BODY;
+  confettiHearts(45);
+};
+
+maybeBtn.onmouseenter = maybeBtn.onclick = ()=>{
+  if(maybeBtn.disabled) return;
+  const r = btnRow.getBoundingClientRect();
+  const maxX = Math.max(0, r.width - 100);
+  const maxY = Math.max(0, r.height - 45);
+  maybeBtn.style.position = "absolute";
+  maybeBtn.style.left = Math.random() * maxX + "px";
+  maybeBtn.style.top  = Math.random() * maxY + "px";
+  showToast("Averyyyy 😼");
+};
+
+restartAllBtn.onclick = ()=>{
+  stageDone = [false,false,false,false];
+  resetFinalUI();
+  buildCrossword();
+  buildQuiz();
+  resetCatch();
+  resetPuzzle();
+  goToStage(0);
+};
+
+function resetFinalUI(){
+  lockBadge.textContent = "🔒 Locked — beat all games";
+  lockBadge.style.background = "rgba(0,0,0,.08)";
+  lockBadge.style.border = "none";
+  finalBody.textContent = "It’s locked until you finish the quest 💌";
+  yesBtn.disabled = true;
+  maybeBtn.disabled = true;
+  maybeBtn.style.position = "relative";
+  maybeBtn.style.left = "";
+  maybeBtn.style.top = "";
+  finalBox.style.display = "block";
+  successBox.style.display = "none";
+}
+
+/* =========================
+   INIT
+========================= */
+buildCrossword();
+buildQuiz();
+setCatchHUD();
+resetPuzzle();
+goToStage(0);
+</script>
+</body>
+</html>
