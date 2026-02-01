@@ -7,14 +7,15 @@
 
 <style>
 :root{
-  --accent:#ff4d86;
-  --accent2:#ff78a7;
-  --bgA:#ffedf3;
-  --bgB:#ffe3ee;
+  --accent:#E96A6A;   /* soft red accent */
+  --accent2:#F7A6C6;  /* blush */
+  --bgA:#F7C1CC;      /* blush pink */
+  --bgB:#D6C6F5;      /* lavender */
+  --bgC:#FFD6C9;      /* peach */
   --panel: rgba(255,255,255,.72);
   --ink:#2b2b2b;
-  --shadow:0 20px 40px rgba(0,0,0,.12);
-  --r:22px;
+  --shadow:0 25px 60px rgba(233,106,106,.14);
+  --r:28px;
 }
 
 *{box-sizing:border-box}
@@ -30,37 +31,37 @@ body{
   background:
     radial-gradient(1000px 600px at 20% 10%, rgba(255,77,134,.18) 0%, transparent 55%),
     radial-gradient(900px 500px at 90% 20%, rgba(255,120,167,.16) 0%, transparent 50%),
-    linear-gradient(135deg, var(--bgA), var(--bgB));
+    linear-gradient(135deg, var(--bgA), var(--bgB), var(--bgC));
 }
 
 /* ===== Themes per stage ===== */
 body[data-theme="welcome"]{
-  --bgA:#fff7fb; --bgB:#ffe9f3; --accent:#ff4d86; --accent2:#ff78a7;
-  --panel: rgba(255,255,255,.78); --ink:#2b2b2b;
+  --bgA:#FFF6FA; --bgB:#EDE2FF; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
+  --panel: rgba(255,255,255,.80); --ink:#2b2b2b;
 }
 body[data-theme="love-letter"]{
-  --bgA:#fff2f7; --bgB:#ffe6f1; --accent:#ff4d86; --accent2:#ff78a7;
-  --panel: rgba(255,255,255,.72); --ink:#2b2b2b;
+  --bgA:#FFF2F7; --bgB:#EDE2FF; --bgC:#FFE1D6; --accent:#E96A6A; --accent2:#F7A6C6;
+  --panel: rgba(255,255,255,.74); --ink:#2b2b2b;
 }
 body[data-theme="pop-quiz"]{
-  --bgA:#f2f7ff; --bgB:#e7f0ff; --accent:#3b82f6; --accent2:#60a5fa;
-  --panel: rgba(255,255,255,.74); --ink:#1f2937;
+  --bgA:#F9F3FF; --bgB:#EDE2FF; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
+  --panel: rgba(255,255,255,.76); --ink:#2b2b2b;
 }
 body[data-theme="arcade"]{
-  --bgA:#0b1020; --bgB:#1b1142; --accent:#a855f7; --accent2:#f472b6;
-  --panel: rgba(255,255,255,.10); --ink:#f8fafc;
+  --bgA:#1A0F2E; --bgB:#2A1447; --bgC:#3A1B52; --accent:#F7A6C6; --accent2:#D6C6F5;
+  --panel: rgba(255,255,255,.10); --ink:#F8FAFC;
 }
 body[data-theme="polaroid"]{
-  --bgA:#fff8e7; --bgB:#ffeecb; --accent:#f59e0b; --accent2:#fb7185;
-  --panel: rgba(255,255,255,.78); --ink:#2b2b2b;
+  --bgA:#FFF6FA; --bgB:#FFE9F2; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
+  --panel: rgba(255,255,255,.80); --ink:#2b2b2b;
 }
 
 /* Enhance theme background using current accent colors */
 body{
   background:
-    radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent) 18%, white) 0%, transparent 55%),
-    radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--accent2) 16%, white) 0%, transparent 50%),
-    linear-gradient(135deg, var(--bgA), var(--bgB));
+    radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent2) 18%, white) 0%, transparent 55%),
+    radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--bgC) 22%, white) 0%, transparent 50%),
+    linear-gradient(135deg, var(--bgA), var(--bgB), var(--bgC));
 }
 
 .wrap{
@@ -69,16 +70,19 @@ body{
   gap:18px;
   grid-template-columns:1.15fr .85fr;
   align-items:start;
+  position:relative;
+  z-index:1;
 }
 @media(max-width:920px){.wrap{grid-template-columns:1fr}}
 
 .card{
-  background:var(--panel);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.62));
   backdrop-filter:blur(10px);
-  border-radius:var(--r);
-  padding:22px;
-  box-shadow:var(--shadow);
-  border:1px solid rgba(255,255,255,.7);
+  border-radius:30px;
+  padding:24px;
+  box-shadow:0 25px 60px rgba(233,106,106,.14);
+  border:1px solid rgba(255,255,255,.75);
 }
 body[data-theme="arcade"] .card{ border-color: rgba(255,255,255,.18); }
 
@@ -102,9 +106,17 @@ p{margin:8px 0; line-height:1.4}
   border-radius:16px;
   font-weight:800;
   cursor:pointer;
-  transition:transform .08s ease;
+  transition:transform .12s ease, box-shadow 260ms ease, filter 260ms ease;
 }
 .bigbtn:active{transform:translateY(1px) scale(.99)}
+.bigbtn.primary:hover{
+  box-shadow: 0 18px 45px rgba(233,106,106,.22);
+  transform: translateY(-1px);
+}
+.bigbtn.ghost:hover{
+  transform: translateY(-1px);
+}
+
 .primary{
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:#fff;
@@ -159,7 +171,7 @@ body[data-theme="arcade"] .step{ background: rgba(255,255,255,.10); border-color
 }
 
 /* Stage enter animation */
-.stageScene{ animation: sceneIn 260ms ease both; }
+.stageScene{ animation: sceneIn 520ms cubic-bezier(.22,.61,.36,1) both; }
 @keyframes sceneIn{
   from{ opacity:0; transform: translateY(8px); }
   to{ opacity:1; transform: translateY(0); }
@@ -380,6 +392,23 @@ body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-colo
 @keyframes fallConf{
   to{transform:translateY(110vh) rotate(360deg); opacity:0}
 }
+
+/* ===== Ambient floating hearts ===== */
+.ambientHeart{
+  position: fixed;
+  bottom: -30px;
+  pointer-events: none;
+  opacity: .18;
+  filter: blur(.2px);
+  z-index: 0;
+  animation: driftUp linear forwards;
+}
+@keyframes driftUp{
+  from{ transform: translateY(0) translateX(0) scale(.9); opacity: 0; }
+  15%{ opacity: .18; }
+  to{ transform: translateY(-110vh) translateX(40px) scale(1.15); opacity: 0; }
+}
+
 </style>
 </head>
 
@@ -1096,6 +1125,21 @@ function resetFinalUI(){
   successBox.style.display = "none";
 }
 
+function startAmbientHearts(){
+  const hearts = ["♡","♥","💗","💖"];
+  setInterval(()=>{
+    const h = document.createElement("div");
+    h.className = "ambientHeart";
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (10 + Math.random()*18) + "px";
+    h.style.animationDuration = (7 + Math.random()*6) + "s";
+    h.style.opacity = (0.10 + Math.random()*0.10).toFixed(2);
+    document.body.appendChild(h);
+    h.addEventListener("animationend", ()=>h.remove());
+  }, 650);
+}
+
 /* =========================
    INIT
 ========================= */
@@ -1103,6 +1147,7 @@ buildCrossword();
 buildQuiz();
 setCatchHUD();
 resetPuzzle();
+startAmbientHearts();
 goToStage(0);
 </script>
 </body>
