@@ -1,823 +1,821 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>For Avery 💖</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Retro Love Letter 💌</title>
+
+<!-- Fonts: elegant script + vintage serif -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 
 <style>
+/* =========================
+   THEME: Retro love letter
+========================= */
 :root{
-  --accent:#E96A6A;   /* soft red accent */
-  --accent2:#F7A6C6;  /* blush */
-  --bgA:#F7C1CC;      /* blush pink */
-  --bgB:#D6C6F5;      /* lavender */
-  --bgC:#FFD6C9;      /* peach */
-  --panel: rgba(255,255,255,.72);
-  --ink:#2a2526;      /* slightly warmer ink */
-  --shadow:0 25px 60px rgba(233,106,106,.14);
-  --r:28px;
+  --red:#B11226;         /* cherry red */
+  --pink:#E8A1B0;        /* soft pink */
+  --paper:#FFF4E8;       /* cream paper */
+  --ink:#1F1A1A;         /* ink black */
+  --paper2:#FDE9EF;      /* blush wash */
+  --shadow: 0 18px 55px rgba(177,18,38,.16);
 }
 
-*{box-sizing:border-box}
+/* Per-page background "ink wash" (fades smoothly) */
+body[data-scene="welcome"]{ --washA:#FFF4E8; --washB:#FDE9EF; --washC:#FFE1EA; }
+body[data-scene="game1"] { --washA:#FFF4E8; --washB:#FFE7F1; --washC:#FFF1DE; }
+body[data-scene="game2"] { --washA:#FFF4E8; --washB:#FFE1EA; --washC:#FDE9EF; }
+body[data-scene="game3"] { --washA:#FFF4E8; --washB:#FDE9EF; --washC:#FFE7F1; }
+body[data-scene="final"] { --washA:#FFF4E8; --washB:#FFE1EA; --washC:#FFF1DE; }
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
 
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  color: var(--ink);
-  transition: background 400ms ease, color 250ms ease;
-
-  /* room for florals */
-  padding: clamp(18px, 4vw, 46px);
-
+  color:var(--ink);
   background:
-    radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent2) 18%, white) 0%, transparent 55%),
-    radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--bgC) 22%, white) 0%, transparent 50%),
-    linear-gradient(135deg, var(--bgA), var(--bgB), var(--bgC));
+    radial-gradient(1200px 800px at 20% 12%, color-mix(in srgb, var(--pink) 18%, white) 0%, transparent 60%),
+    radial-gradient(1100px 700px at 85% 15%, color-mix(in srgb, var(--red) 10%, white) 0%, transparent 55%),
+    linear-gradient(180deg, var(--washA), var(--washB), var(--washC));
+  transition: background 900ms ease;
+  overflow:hidden;
+  font-family: "IM Fell English", serif;
 }
 
-/* ===== Themes per stage ===== */
-body[data-theme="welcome"]{
-  --bgA:#FFF6FA; --bgB:#EDE2FF; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.80); --ink:#2a2526;
-}
-body[data-theme="love-letter"]{
-  --bgA:#FFF2F7; --bgB:#EDE2FF; --bgC:#FFE1D6; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.74); --ink:#2a2526;
-}
-body[data-theme="pop-quiz"]{
-  --bgA:#F9F3FF; --bgB:#EDE2FF; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.76); --ink:#2a2526;
-}
-body[data-theme="arcade"]{
-  --bgA:#1A0F2E; --bgB:#2A1447; --bgC:#3A1B52; --accent:#F7A6C6; --accent2:#D6C6F5;
-  --panel: rgba(255,255,255,.10); --ink:#F8FAFC;
-}
-body[data-theme="polaroid"]{
-  --bgA:#FFF6FA; --bgB:#FFE9F2; --bgC:#FFE4DA; --accent:#E96A6A; --accent2:#F7A6C6;
-  --panel: rgba(255,255,255,.80); --ink:#2a2526;
+/* Paper texture overlay (subtle + scanned vibe) */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(0,0,0,.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 35%, rgba(0,0,0,.04) 0%, transparent 38%),
+    radial-gradient(circle at 40% 80%, rgba(0,0,0,.03) 0%, transparent 42%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.015) 0px, rgba(0,0,0,.015) 1px, transparent 2px, transparent 5px);
 }
 
-/* Ensure background reacts to theme vars */
-body{
+/* Faint paper fold lines */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.12;
+  mix-blend-mode:multiply;
   background:
-    radial-gradient(1000px 600px at 20% 10%, color-mix(in srgb, var(--accent2) 18%, white) 0%, transparent 55%),
-    radial-gradient(900px 500px at 90% 20%, color-mix(in srgb, var(--bgC) 22%, white) 0%, transparent 50%),
-    linear-gradient(135deg, var(--bgA), var(--bgB), var(--bgC));
+    /* vertical fold */
+    linear-gradient(90deg,
+      transparent 0%,
+      transparent 49.5%,
+      rgba(0,0,0,.10) 50%,
+      transparent 50.5%,
+      transparent 100%),
+    /* horizontal fold */
+    linear-gradient(180deg,
+      transparent 0%,
+      transparent 57.5%,
+      rgba(0,0,0,.09) 58%,
+      transparent 58.5%,
+      transparent 100%),
+    /* tiny crease noise */
+    repeating-linear-gradient(135deg, rgba(0,0,0,.02) 0px, rgba(0,0,0,.02) 1px, transparent 2px, transparent 10px);
 }
 
-/* =========================
-   Watercolor floral frame
-   (uses floral.jpg)
-========================= */
-.floralFrame{
-  position: fixed;
-  inset: 10px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.55;
-  background-image: url("floral.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  filter: saturate(1.05) blur(0.15px);
+/* Full-screen pages */
+.page{
+  position:fixed;
+  inset:0;
+  display:none;
+  padding: clamp(18px, 4vw, 54px);
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  animation: pageIn 700ms ease both;
 }
+.page.active{ display:block; }
 
-body[data-theme="arcade"] .floralFrame{
-  opacity: 0.14;
-  filter: saturate(1) blur(0.2px);
-}
-
-@media (max-width: 520px){
-  .floralFrame{
-    inset: 6px;
-    opacity: 0.42;
-  }
-}
-
-.wrap{
-  width:min(1040px,92vw);
-  display:grid;
-  gap:18px;
-  grid-template-columns:1.15fr .85fr;
-  align-items:start;
-  position:relative;
-  z-index:1; /* above frame */
-}
-@media(max-width:920px){.wrap{grid-template-columns:1fr}}
-
-.card{
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.70));
-  backdrop-filter:blur(10px);
-  border-radius:30px;
-  padding:24px;
-  box-shadow:0 25px 60px rgba(233,106,106,.12);
-  border:1px solid rgba(255,255,255,.78);
-}
-body[data-theme="arcade"] .card{
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.18);
-}
-
-h1{margin:0 0 6px; font-size:clamp(26px,4vw,36px)}
-h2{margin:0 0 10px; font-size:clamp(18px,3vw,24px)}
-p{margin:8px 0; line-height:1.4}
-
-.pillrow{display:flex;gap:10px;flex-wrap:wrap; margin:10px 0 12px}
-.pill{
-  padding:6px 12px;
-  border-radius:999px;
-  background: color-mix(in srgb, var(--accent) 12%, white);
-  font-size:13px;
-  border:1px solid color-mix(in srgb, var(--accent) 18%, transparent);
-}
-.small{font-size:13px; opacity:.78}
-
-.bigbtn{
-  border:0;
-  padding:12px 16px;
-  border-radius:16px;
-  font-weight:800;
-  cursor:pointer;
-  transition:transform .12s ease, box-shadow 260ms ease, filter 260ms ease;
-}
-.bigbtn:active{transform:translateY(1px) scale(.99)}
-.bigbtn.primary:hover{
-  box-shadow: 0 18px 45px rgba(233,106,106,.22);
-  transform: translateY(-1px);
-}
-.bigbtn.ghost:hover{ transform: translateY(-1px); }
-
-.primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;
-  box-shadow:0 12px 25px rgba(0,0,0,.12);
-}
-.ghost{
-  background:rgba(255,255,255,.85);
-  border:1px solid rgba(0,0,0,.08);
-  color: var(--ink);
-}
-body[data-theme="arcade"] .ghost{
-  background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.22);
-}
-
-.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-
-.lockedBadge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 12px;
-  border-radius:999px;
-  background:rgba(0,0,0,.08);
-  font-size:13px;
-  width:max-content;
-}
-body[data-theme="arcade"] .lockedBadge{ background: rgba(255,255,255,.12); }
-
-/* Stage nav */
-.stageNav{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin:10px 0 14px;
-}
-.step{
-  font-size:13px;
-  padding:7px 10px;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,.08);
-  background:rgba(255,255,255,.65);
-}
-body[data-theme="arcade"] .step{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
-.step.done{
-  border-color: rgba(40,167,69,.25);
-  background: rgba(40,167,69,.10);
-}
-.step.active{
-  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, white);
-}
-
-/* Stage enter animation */
-.stageScene{ animation: sceneIn 520ms cubic-bezier(.22,.61,.36,1) both; }
-@keyframes sceneIn{
-  from{ opacity:0; transform: translateY(8px); }
+@keyframes pageIn{
+  from{ opacity:0; transform: translateY(10px); }
   to{ opacity:1; transform: translateY(0); }
 }
 
-/* ===== Welcome page ===== */
-.welcomeHero{
-  display:grid;
-  gap:14px;
-  align-items:center;
-  text-align:center;
-  padding: 10px 6px 2px;
-}
-.plushFrame{
-  width:min(320px, 80vw);
-  margin: 0 auto;
-  padding:14px;
-  border-radius:22px;
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: 0 18px 35px rgba(0,0,0,.12);
-}
-.plushImg{
-  width: 100%;
-  height: auto;
-  display:block;
-  border-radius:18px;
-  animation: plushBob 2.6s ease-in-out infinite;
-}
-@keyframes plushBob{
-  0%,100%{ transform: translateY(0px) rotate(-1deg); }
-  50%{ transform: translateY(-8px) rotate(1deg); }
+/* Centered poster layout */
+.poster{
+  width:min(900px, 96vw);
+  margin:0 auto;
+  padding: clamp(18px, 4vw, 32px);
+  position:relative;
 }
 
-/* ===== Crossword ===== */
-.cwGrid{display:flex; flex-direction:column; gap:10px; margin-top:10px}
-.cwRow{ display:flex; gap:10px; transition:.2s; }
-.cwRow.correct .cell{
-  background: color-mix(in srgb, var(--accent) 15%, white);
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+/* Hand-drawn divider */
+.divider{
+  margin: 18px auto 6px;
+  width: min(520px, 92vw);
+  height: 18px;
+  opacity:.9;
+  background:
+    radial-gradient(circle at 12px 9px, rgba(177,18,38,.35) 0 2px, transparent 3px),
+    radial-gradient(circle at 24px 9px, rgba(177,18,38,.25) 0 2px, transparent 3px),
+    radial-gradient(circle at 36px 9px, rgba(177,18,38,.35) 0 2px, transparent 3px),
+    repeating-linear-gradient(90deg,
+      rgba(177,18,38,.0) 0px,
+      rgba(177,18,38,.0) 10px,
+      rgba(177,18,38,.25) 11px,
+      rgba(177,18,38,.0) 14px);
+  border-radius:999px;
 }
-.cwRow.correct{ animation: pop .22s ease }
-@keyframes pop{ 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
-.cell{
-  width:52px;
-  height:56px;
-  border-radius:14px;
-  border:1px solid rgba(0,0,0,.10);
-  background:rgba(255,255,255,.85);
+
+/* Type */
+.h1{
+  font-family:"Great Vibes", cursive;
+  font-size: clamp(54px, 8vw, 86px);
+  color: var(--red);
+  text-align:center;
+  margin: 0 0 6px;
+  line-height: 1.0;
+}
+.h2{
+  font-family:"Great Vibes", cursive;
+  font-size: clamp(34px, 5.4vw, 54px);
+  color: var(--red);
+  text-align:center;
+  margin: 0 0 8px;
+  line-height: 1.0;
+}
+.p{
+  font-size: clamp(16px, 2.1vw, 18px);
+  line-height: 1.75;
+  text-align:center;
+  margin: 10px auto;
+  max-width: 56ch;
+}
+
+/* Buttons: soft, analog */
+.btnrow{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top: 16px;
+  position:relative; /* so maybe can run around inside */
+  min-height: 58px;
+}
+
+.btn{
+  border:0;
+  cursor:pointer;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-family: "IM Fell English", serif;
+  letter-spacing: .2px;
+  transition: transform .12s ease, filter .25s ease, box-shadow .25s ease;
+  will-change: transform;
+}
+.btn:active{ transform: translateY(1px) scale(.99); }
+
+.btn.primary{
+  background: linear-gradient(135deg, var(--red), color-mix(in srgb, var(--red) 70%, var(--pink)));
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(177,18,38,.28);
+}
+.btn.primary:hover{ filter: brightness(1.03); box-shadow: 0 18px 40px rgba(177,18,38,.32); }
+
+.btn.ghost{
+  background: rgba(255,255,255,.55);
+  border: 1.5px dashed rgba(177,18,38,.45);
+  color: var(--red);
+}
+.btn.ghost:hover{ filter: brightness(1.02); }
+
+/* Locked helper */
+.lockNote{
+  text-align:center;
+  font-size: 14px;
+  opacity:.8;
+  margin-top: 10px;
+}
+
+/* Tiny toast */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.78);
+  color:#fff;
+  font-weight: 800;
+  opacity:0;
+  transition: opacity .2s ease;
+  z-index: 99999;
+}
+.toast.show{ opacity:1; }
+
+/* Confetti hearts */
+.confetti{
+  position:fixed;
+  top:-24px;
+  pointer-events:none;
+  z-index: 9999;
+  animation: confFall linear forwards;
+}
+@keyframes confFall{
+  to{ transform: translateY(112vh) rotate(360deg); opacity:0; }
+}
+
+/* =========================
+   WELCOME: only button + big heart bg
+========================= */
+#welcomeWrap{
+  min-height: calc(100vh - 120px);
   display:grid;
   place-items:center;
   position:relative;
-  box-shadow:0 10px 18px rgba(0,0,0,.08);
 }
-body[data-theme="arcade"] .cell{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.18); }
+#welcomeWrap::before{
+  content:"❤";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size: min(70vw, 520px);
+  color: rgba(177,18,38,.10);
+  transform: rotate(-8deg);
+  filter: blur(.2px);
+}
+.pulse{
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{ transform: translateY(0) scale(1); }
+  50%{ transform: translateY(-1px) scale(1.03); }
+}
+
+/* =========================
+   GAME 1: CROSSWORD GRID (row-style crossword)
+========================= */
+.cwWrap{
+  width:min(860px, 96vw);
+  margin: 10px auto 0;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.cwGrid{
+  width:min(760px, 96vw);
+  margin:0 auto;
+  display:grid;
+  gap: 10px;
+}
+
+.cwRow{
+  display:flex;
+  gap: 8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  padding: 10px 8px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.52);
+  box-shadow: 0 14px 34px rgba(0,0,0,.08);
+  position:relative;
+}
+
+.cwRow.correct{
+  border-color: rgba(40,167,69,.35);
+  background: rgba(40,167,69,.08);
+}
+
+.cell{
+  width:52px;
+  height:58px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.75);
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+}
+
+.number{
+  position:absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  opacity:.55;
+}
+
 .cell input{
   width:100%;
   height:100%;
   border:0;
   background:none;
-  text-align:center;
-  font-size:22px;
-  font-weight:900;
-  text-transform:uppercase;
   outline:none;
-  border-radius:14px;
+  text-align:center;
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
   color: var(--ink);
-}
-.cell input:focus{ box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
-.number{
-  position:absolute;
-  top:5px;
-  left:7px;
-  font-size:11px;
-  opacity:.6;
-  font-weight:900;
-}
-.clues{margin-top:10px; font-size:14px}
-.clue{display:flex; gap:10px; padding:5px 0; border-top:1px solid rgba(0,0,0,.06)}
-.clue:first-child{border-top:0}
-.clue b{min-width:18px}
-body[data-theme="arcade"] .clue{ border-top-color: rgba(255,255,255,.12); }
-
-/* ===== Quiz (Canvas-style) ===== */
-.quizBox{
-  background:rgba(255,255,255,.65);
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:18px;
-  padding:14px;
-
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-
-  position: relative; /* for submitting overlay */
-}
-body[data-theme="arcade"] .quizBox{
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.18);
+  font-family: "IM Fell English", serif;
 }
 
-.q{
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255,255,255,.85);
+.clues{
+  width:min(740px, 96vw);
+  margin: 0 auto;
+  padding: 14px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.60);
   border: 1px solid rgba(0,0,0,.08);
 }
-body[data-theme="arcade"] .q{
-  background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.18);
+.clue{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding: 10px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.55);
+  border: 1px dashed rgba(177,18,38,.20);
+  margin: 10px 0;
 }
+.clue b{ min-width: 20px; color: var(--red); }
 
-.qtitle{
+/* =========================
+   GAME 2: Quiz
+========================= */
+.quizBox{
+  width: min(720px, 96vw);
+  margin: 16px auto 0;
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.65);
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow: 0 16px 50px rgba(0,0,0,.10);
+}
+.qTitle{
   font-weight: 900;
   margin-bottom: 12px;
+  text-align:center;
+  font-size: clamp(18px, 2.6vw, 22px);
 }
-
 .choices{
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:10px;
 }
-
 .choice{
   width:100%;
   text-align:left;
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid rgba(0,0,0,.10);
-  background:#fff;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.85);
   cursor:pointer;
-  font-weight:800;
-  color:#111;
-}
-body[data-theme="arcade"] .choice{
-  background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.20);
-  color: var(--ink);
-}
-.choice.correct{border-color: rgba(40,167,69,.35); background: rgba(40,167,69,.10)}
-.choice.wrong{border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: color-mix(in srgb, var(--accent) 10%, white); }
-
-/* Canvas-style quiz info bar */
-.quizInfo{
-  margin-top: 14px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 13px;
   font-weight: 700;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(0,0,0,.08);
-  color: rgba(0,0,0,.65);
+  font-family: "IM Fell English", serif;
+  font-size: 18px;
 }
-body[data-theme="arcade"] .quizInfo{
-  background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.18);
-  color: rgba(255,255,255,.75);
-}
+.choice:hover{ filter: brightness(1.02); }
+.choice.selected{ outline: 3px solid rgba(177,18,38,.18); }
+.choice.correct{ border-color: rgba(40,167,69,.35); background: rgba(40,167,69,.10); }
+.choice.wrong{ border-color: rgba(177,18,38,.30); background: rgba(177,18,38,.08); }
 
-/* Submitting overlay (Canvas-ish) */
-.submittingOverlay{
-  position:absolute;
-  inset:0;
-  border-radius:18px;
-  background: rgba(255,255,255,.78);
-  backdrop-filter: blur(6px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  font-weight:900;
-  z-index:5;
-}
-body[data-theme="arcade"] .submittingOverlay{
-  background: rgba(20,20,24,.55);
-}
-
-/* little spinner */
-.spinner{
-  width:18px;
-  height:18px;
-  border-radius:999px;
-  border:3px solid rgba(0,0,0,.12);
-  border-top-color: color-mix(in srgb, var(--accent) 70%, transparent);
-  animation: spin .8s linear infinite;
-}
-body[data-theme="arcade"] .spinner{
-  border-color: rgba(255,255,255,.18);
-  border-top-color: rgba(255,255,255,.55);
-}
-@keyframes spin{ to{ transform: rotate(360deg); } }
-
-/* ===== Heart Catch ===== */
-.arena{
-  position:relative;
-  height:280px;
-  border-radius:18px;
-  border:1px solid rgba(0,0,0,.08);
-  background:rgba(255,255,255,.65);
-  overflow:hidden;
-}
-body[data-theme="arcade"] .arena{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+/* =========================
+   GAME 3: Heart catch
+========================= */
 .hud{
+  width:min(740px, 96vw);
+  margin: 10px auto 10px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin:10px 0 8px;
-  font-weight:800;
+  gap:12px;
+  font-weight:900;
+  font-size: 18px;
 }
-.falling{
+.arena{
+  width:min(740px, 96vw);
+  height: min(56vh, 420px);
+  margin:0 auto;
+  border-radius:20px;
+  border:1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.60);
+  position:relative;
+  overflow:hidden;
+  box-shadow: 0 16px 55px rgba(0,0,0,.10);
+}
+.fall{
   position:absolute;
-  top:-30px;
+  top:-32px;
   user-select:none;
   cursor:pointer;
-  filter: drop-shadow(0 8px 10px rgba(0,0,0,.15));
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,.16));
   animation: fall linear forwards;
 }
 @keyframes fall{
-  to{ transform: translateY(340px) rotate(360deg); opacity: 0.95; }
+  to{ transform: translateY(120%); opacity:.95; }
 }
 
-/* ===== Slide Puzzle ===== */
-.puzzleWrap{ display:flex; flex-direction:column; gap:10px; }
-.puzzleMeta{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  font-weight:800;
+/* =========================
+   FINAL: Wax-sealed postcard + obnoxious yes mode
+========================= */
+.postcard{
+  width: min(920px, 96vw);
+  margin: 24px auto 0;
+  padding: 36px 32px 44px;
+  border-radius: 26px;
+  background: linear-gradient(180deg, #FFFDF7, var(--paper));
+  border: 3px solid rgba(177,18,38,.55);
+  box-shadow: 0 26px 85px rgba(0,0,0,.16);
+  position: relative;
 }
-.puzzleBoard{
-  width: 300px;
-  height: 300px;
-  border-radius:18px;
-  border:1px solid rgba(0,0,0,.08);
-  background:rgba(255,255,255,.65);
+
+.postmark{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width: 140px;
+  height: 92px;
+  border-radius: 14px;
+  border: 2px dashed rgba(0,0,0,.16);
+  background: rgba(255,255,255,.55);
+  transform: rotate(5deg);
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap:8px;
-  padding:8px;
-  overflow:hidden;
+  place-items:center;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  opacity: .9;
 }
-@media(max-width:420px){
-  .puzzleBoard{ width: 270px; height: 270px; }
-}
-.tileBtn{
-  border:1px solid rgba(0,0,0,.10);
-  border-radius:14px;
-  background:#fff;
-  cursor:pointer;
-  box-shadow:0 10px 18px rgba(0,0,0,.08);
-  background-repeat:no-repeat;
-  background-size: 300% 300%;
-  transition: transform .08s ease;
-}
-.tileBtn:active{ transform: translateY(1px) scale(.99); }
-.tileBtn.blank{
-  background:none;
-  border:1px dashed rgba(0,0,0,.12);
-  box-shadow:none;
-  cursor:default;
+.postmark span{ display:block; text-align:center; line-height:1.1; }
+
+.kiss{
+  position:absolute;
+  top: 104px;
+  right: 44px;
+  font-size: 30px;
+  transform: rotate(-10deg);
+  opacity:.85;
 }
 
-/* Right panel */
-.final{
-  margin-top:14px;
-  padding:18px;
-  border-radius:18px;
-  border:1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, white);
+/* Wax seal stamp */
+.waxSeal{
+  position:absolute;
+  left: 22px;
+  bottom: 18px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #B11226, #7C0D1A);
+  box-shadow: 0 22px 48px rgba(0,0,0,.28);
+  transform: rotate(-10deg);
+  transform-origin: 60% 70%;
 }
-.btnrow{display:flex;gap:12px;position:relative;min-height:60px}
-#maybeBtn{position:relative}
-
-/* Toast + confetti hearts */
-.toast{
-  position:fixed;
-  bottom:24px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#000c;
-  color:#fff;
-  padding:10px 14px;
-  border-radius:999px;
-  opacity:0;
-  transition:.2s;
-  pointer-events:none;
-  font-weight:700;
-  z-index: 10;
+.waxSeal::before{
+  content:"❤";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color: rgba(255,255,255,.86);
+  font-size: 42px;
+  text-shadow: 0 10px 20px rgba(0,0,0,.25);
+  opacity: .95;
+  transform: translateY(1px);
 }
-.toast.show{opacity:1}
-.confetti{
-  position:fixed;
-  top:-20px;
-  animation: fallConf linear forwards;
-  pointer-events:none;
-  z-index: 9;
-}
-@keyframes fallConf{
-  to{transform:translateY(110vh) rotate(360deg); opacity:0}
+.waxSeal::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  background: rgba(0,0,0,.12);
+  filter: blur(12px);
+  opacity: 0;
+  transform: translateY(12px) scale(.9);
+  z-index:-1;
 }
 
-/* ===== Ambient floating hearts ===== */
-.ambientHeart{
-  position: fixed;
-  bottom: -30px;
-  pointer-events: none;
-  opacity: .18;
-  filter: blur(.2px);
-  z-index: 1; /* above floral frame, behind cards */
-  animation: driftUp linear forwards;
+/* stamp animation (re-triggered via JS) */
+.waxSeal.stamp{ animation: sealStamp 720ms cubic-bezier(.2,.9,.25,1.05) both; }
+.waxSeal.stamp::after{ animation: sealShadow 720ms cubic-bezier(.2,.9,.25,1.05) both; }
+
+@keyframes sealStamp{
+  0%{ opacity:0; transform: translateY(-30px) rotate(-18deg) scale(.92); }
+  55%{ opacity:1; transform: translateY(0) rotate(-10deg) scale(1.07); }
+  72%{ transform: translateY(0) rotate(-10deg) scale(.99); }
+  100%{ opacity:1; transform: translateY(0) rotate(-10deg) scale(1); }
 }
-@keyframes driftUp{
-  from{ transform: translateY(0) translateX(0) scale(.9); opacity: 0; }
-  15%{ opacity: .18; }
-  to{ transform: translateY(-110vh) translateX(40px) scale(1.15); opacity: 0; }
+@keyframes sealShadow{
+  0%{ opacity:0; transform: translateY(16px) scale(.86); }
+  55%{ opacity:.35; transform: translateY(7px) scale(.99); }
+  72%{ opacity:.18; transform: translateY(9px) scale(.92); }
+  100%{ opacity:.28; transform: translateY(8px) scale(.95); }
+}
+
+/* Meme block */
+.memeBlock{
+  width: min(800px, 96vw);
+  margin: 26px auto 0;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.70);
+  box-shadow: 0 18px 60px rgba(0,0,0,.12);
+  transform: rotate(-.7deg);
+  text-align:center;
+}
+.memeBlock img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: 18px;
+}
+.memeCap{
+  margin-top: 12px;
+  font-weight: 900;
+  opacity:.9;
+  font-size: 20px;
+}
+.memeCap.small{
+  opacity:.65;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+/* OBNOXIOUS PARTY MODE (only on YES) */
+body.party{
+  animation: partyFlash 1.05s linear infinite;
+}
+@keyframes partyFlash{
+  0%   { filter: hue-rotate(0deg) saturate(1.05); }
+  50%  { filter: hue-rotate(28deg) saturate(1.5); }
+  100% { filter: hue-rotate(0deg) saturate(1.05); }
+}
+
+/* FINAL PAGE: BIG MODE */
+#p4 .h2{
+  font-size: clamp(48px, 7vw, 86px);
+  margin-bottom: 18px;
+}
+#p4 .p{ font-size: clamp(18px, 2.6vw, 22px); }
+
+/* Bigger buttons on final page */
+#p4 .btn{
+  padding: 18px 36px;
+  font-size: 20px;
+}
+#p4 .btn.primary{
+  font-size: 22px;
+}
+
+/* "YES grows" visual smoothing */
+#yesBtn{
+  transform-origin: center;
+  will-change: transform;
 }
 </style>
 </head>
 
-<body data-theme="welcome">
-  <div class="floralFrame"></div>
+<body data-scene="welcome">
+  <div class="toast" id="toast"></div>
 
-  <div class="wrap">
-
-    <!-- LEFT -->
-    <section class="card">
-      <h1>Hey Avery 💖</h1>
-      <p>Little quest time. Beat the games to unlock my question 😳</p>
-
-      <div class="pillrow">
-        <span class="pill">About us 🫶</span>
-        <span class="pill">Cute + interactive</span>
-        <span class="pill">Unlock the surprise 💌</span>
+  <!-- =========================
+       PAGE 0: WELCOME (button only)
+  ========================== -->
+  <section class="page active" id="p0">
+    <div class="poster" id="welcomeWrap">
+      <div class="btnrow">
+        <button class="btn primary pulse" id="startBtn" style="font-size:22px;padding:18px 38px;">
+          Click here 💌
+        </button>
       </div>
+    </div>
+  </section>
 
-      <div class="stageNav" id="stageNav"></div>
+  <!-- =========================
+       PAGE 1: GAME 1 (CROSSWORD GRID)
+  ========================== -->
+  <section class="page" id="p1">
+    <div class="poster">
+      <div class="h2">Game 1</div>
+      <p class="p">Fill the crossword. One row = one answer. Don’t embarrass me 😌</p>
+      <div class="divider"></div>
 
-      <!-- Stage 0: Welcome -->
-      <div id="stage0" class="stageScene">
-        <div class="welcomeHero">
-          <div class="plushFrame">
-            <img class="plushImg" src="jellycat.png" alt="A cute plush friend" />
-          </div>
-
-          <h2 style="margin:0">Welcome, Avery 💖</h2>
-          <p style="margin:0; opacity:.88">
-            I made you a tiny quest. Beat the games to unlock a question I’ve been saving 😳
-          </p>
-
-          <div class="row" style="justify-content:center; margin-top:10px">
-            <button class="bigbtn primary" id="startQuestBtn">Start the quest 💌</button>
-          </div>
-
-          <p class="small" style="margin:0">
-            If the plush image doesn’t show: make sure <b>jellycat.png</b> is next to <b>index.html</b>.
-          </p>
-        </div>
-      </div>
-
-      <!-- Stage 1: Crossword -->
-      <div id="stage1" class="stageScene" style="display:none">
-        <h2>Game 1: Crossword</h2>
-        <p class="small">Rows turn pink when correct.</p>
+      <div class="cwWrap">
         <div class="cwGrid" id="cwGrid"></div>
         <div class="clues" id="clues"></div>
-
-        <div class="row" style="margin-top:12px">
-          <button class="bigbtn primary" id="cwCheckBtn">Check</button>
-          <button class="bigbtn ghost" id="cwClearBtn">Clear</button>
-        </div>
       </div>
 
-      <!-- Stage 2: Quiz -->
-      <div id="stage2" class="stageScene" style="display:none">
-        <h2>Game 2: Mini Quiz</h2>
-        <p class="small">Pick the right answers 😌</p>
-
-        <div class="quizBox" id="quizBox"></div>
-
-        <div class="quizInfo">
-          <span>Attempt 1 of 1</span>
-          <span>3 questions • 3 points</span>
-        </div>
-
-        <div class="row" style="margin-top:12px">
-          <button class="bigbtn primary" id="quizSubmitBtn">Submit</button>
-          <button class="bigbtn ghost" id="quizResetBtn">Clear Answers</button>
-        </div>
+      <div class="btnrow">
+        <button class="btn ghost" id="cwClearBtn">Clear</button>
+        <button class="btn primary" id="cwCheckBtn">Check</button>
       </div>
 
-      <!-- Stage 3: Heart Catch -->
-      <div id="stage3" class="stageScene" style="display:none">
-        <h2>Game 3: Heart Catch</h2>
-        <p class="small">Click hearts before they fall. Reach the goal to win.</p>
-        <div class="hud">
-          <div>Score: <span id="score">0</span>/<span id="goal">10</span></div>
-          <div>Time: <span id="time">15</span>s</div>
-        </div>
-        <div class="arena" id="arena" aria-label="Heart catch arena"></div>
-        <div class="row" style="margin-top:12px">
-          <button class="bigbtn primary" id="startCatchBtn">Start</button>
-          <button class="bigbtn ghost" id="resetCatchBtn">Reset</button>
-        </div>
+      <p class="p" id="cwMsg" style="min-height:2.2em;"></p>
+
+      <div class="btnrow" id="g1NextRow" style="display:none">
+        <button class="btn primary" id="g1Next">Next page →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       PAGE 2: GAME 2 (QUIZ)
+  ========================== -->
+  <section class="page" id="p2">
+    <div class="poster">
+      <div class="h2">Game 2</div>
+      <p class="p">Pick the right answer. Like you’re choosing me. 😌</p>
+      <div class="divider"></div>
+
+      <div class="quizBox" id="quizBox"></div>
+
+      <div class="btnrow">
+        <button class="btn ghost" id="qReset">Reset</button>
+        <button class="btn primary" id="qSubmit">Submit</button>
       </div>
 
-      <!-- Stage 4: Slide Puzzle -->
-      <div id="stage4" class="stageScene" style="display:none">
-        <h2>Game 4: Slide Puzzle</h2>
-        <p class="small">Slide the tiles to rebuild our photo 🫶</p>
+      <p class="p" id="qMsg" style="min-height: 2.2em;"></p>
 
-        <div class="puzzleWrap">
-          <div class="puzzleMeta">
-            <div>Moves: <span id="moves">0</span></div>
-            <div>Status: <span id="puzzleStatus">Not started</span></div>
-          </div>
+      <div class="btnrow" id="g2NextRow" style="display:none">
+        <button class="btn primary" id="g2Next">Next page →</button>
+      </div>
+    </div>
+  </section>
 
-          <div class="puzzleBoard" id="puzzleBoard" aria-label="Slide puzzle board"></div>
+  <!-- =========================
+       PAGE 3: GAME 3 (HEART CATCH)
+  ========================== -->
+  <section class="page" id="p3">
+    <div class="poster">
+      <div class="h2">Game 3</div>
+      <p class="p">Catch hearts before they fall. Be so serious. 💖</p>
+      <div class="divider"></div>
 
-          <div class="row" style="margin-top:12px">
-            <button class="bigbtn primary" id="shufflePuzzleBtn">Shuffle</button>
-            <button class="bigbtn ghost" id="resetPuzzleBtn">Reset</button>
-          </div>
+      <div class="hud">
+        <div>Score: <span id="score">0</span>/<span id="goal">10</span></div>
+        <div>Time: <span id="time">12</span>s</div>
+      </div>
+
+      <div class="arena" id="arena" aria-label="heart catch arena"></div>
+
+      <div class="btnrow">
+        <button class="btn ghost" id="hcReset">Reset</button>
+        <button class="btn primary" id="hcStart">Start</button>
+      </div>
+
+      <p class="p" id="hcMsg" style="min-height: 2.2em;"></p>
+
+      <div class="btnrow" id="g3NextRow" style="display:none">
+        <button class="btn primary" id="g3Next">Final page 💌</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       PAGE 4: FINAL (WAX POSTCARD)
+  ========================== -->
+  <section class="page" id="p4">
+    <div class="poster">
+      <div class="h2">One last thing</div>
+      <p class="p">A very normal question (I’m lying). 💌</p>
+      <div class="divider"></div>
+
+      <div class="postcard" id="postcard">
+        <div class="postmark">
+          <span>POST</span><span>LOVE</span><span>STAMP</span>
+        </div>
+        <div class="kiss">💋</div>
+
+        <div class="h2" style="margin-top: 18px;">Will you be my Valentine?</div>
+        <p class="p" style="max-width: 52ch; margin-top: 10px;">
+          Answer correctly (there is only one correct answer).
+        </p>
+
+        <div class="btnrow" id="btnRowFinal" style="margin-top: 18px;">
+          <button class="btn primary" id="yesBtn">YES 💘</button>
+          <button class="btn ghost" id="maybeBtn">maybe 🙈</button>
         </div>
 
-        <p class="small">Put a photo named <b>photo.jpg</b> next to <b>index.html</b>.</p>
+        <div class="waxSeal" id="waxSeal" aria-hidden="true"></div>
       </div>
 
-      <p class="small" style="margin-top:14px">
-        Tip: You can customize quiz questions & heart goal inside the code near “CUSTOMIZE”.
-      </p>
-    </section>
+      <!-- Hidden obnoxious celebration -->
+      <div id="partyArea" style="display:none;">
+        <div class="memeBlock">
+          <!-- put pray-crying.gif next to this html file -->
+          <img src="pray-crying.gif" alt="meme" />
+          <div class="memeCap">me being so normal about this</div>
+          <div class="memeCap small">anyway yeah no big deal or anything</div>
+        </div>
 
-    <!-- RIGHT -->
-    <section class="card">
-      <div class="lockedBadge" id="lockBadge">🔒 Locked — beat all games</div>
+        <p class="p" style="font-weight:900; font-size: clamp(20px, 2.8vw, 28px);">
+          CONGRATS 🎉 I will now be unbearable about this.
+        </p>
 
-      <div class="final" id="finalBox">
-        <h2>A question for you…</h2>
-        <p id="finalBody">It’s locked until you finish the quest 💌</p>
-
-        <div class="btnrow" id="btnRow">
-          <button class="bigbtn primary" id="yesBtn" disabled>YES 💘</button>
-          <button class="bigbtn ghost" id="maybeBtn" disabled>maybe 🙈</button>
+        <div class="btnrow">
+          <button class="btn primary" id="restartBtn" style="font-size:22px;padding:18px 40px;">
+            Play again
+          </button>
         </div>
       </div>
-
-      <div class="final" id="successBox" style="display:none">
-        <h2 id="successHeader">AVERY SAID YES 😭💖</h2>
-        <p id="successBody">Okay wow. Best day ever. 🥰 I can’t wait to be your Valentine.</p>
-        <button class="bigbtn primary" id="restartAllBtn">Play again</button>
-      </div>
-    </section>
-
-  </div>
-
-  <div class="toast" id="toast"></div>
+    </div>
+  </section>
 
 <script>
 /* =========================
-   CUSTOMIZE
+   CUSTOMIZE SECTION
 ========================= */
+function normalize(s){
+  return (s || "").toUpperCase().replace(/[^A-Z0-9]/g,"");
+}
+
 const CROSSWORD = [
-  { clue: "Our favorite date spot", answer: "Carrollton" },
-  { clue: "Our favorite song",      answer: "The Dress" },
-  { clue: "Our favorite trip",      answer: "New York" }
+  { clue: "Our favorite date spot?", answer: "CARROLLTON" },
+  { clue: "Our favorite brunch spot?", answer: "EGGTASTIC" },
+  { clue: "Our best trip?", answer: "NEW YORK" }
 ];
 
-const QUIZ = [
-  {
-    q: "Where did we have our first date?",
-    choices: ["Panera Bread", "Chili's", "Olive Garden", "In-N-Out"],
-    correctIndex: 0
-  },
-  {
-    q: "What was our first trip together?",
-    choices: ["Austin", "Corpus Christi", "New York", "Boston"],
-    correctIndex: 0
-  },
-  {
-    q: "What do I love most about you?",
-    choices: [
-      "All of the above",
-      "Your sweet smile",
-      "Your caring nature",
-      "Your unstoppable work ethic",
-      "Your amazing sense of humor"
-    ],
-    correctIndex: 0
-  }
-];
+const GAME2 = {
+  question: "Where did we have our first date?",
+  choices: ["Panera Bread", "Chili's", "Olive Garden", "In-N-Out"],
+  correctIndex: 0
+};
 
-const CATCH_GOAL = 10;
-const CATCH_TIME = 15;
-
-// Images must be next to index.html
-const PUZZLE_IMG = "photo.jpg";
-const WELCOME_IMG = "jellycat.png"; // referenced in HTML
-
-const FINAL_QUESTION = "Avery… will you be my Valentine? 💌";
-const AFTER_YES_TITLE = "AVERY SAID YES 😭💖";
-const AFTER_YES_BODY  = "Okay wow. Best day ever. 🥰 I can’t wait to be your Valentine.";
+const HEART_CATCH = {
+  goal: 10,
+  seconds: 12
+};
 
 /* =========================
    HELPERS
 ========================= */
-const normalize = s => (s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
-const toast = document.getElementById("toast");
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"), 1200);
+const toastEl = document.getElementById("toast");
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  setTimeout(()=>toastEl.classList.remove("show"), 1100);
 }
-function confettiHearts(count=28){
+
+function go(pageIndex){
+  for(let i=0;i<=4;i++){
+    document.getElementById("p"+i).classList.remove("active");
+  }
+  document.getElementById("p"+pageIndex).classList.add("active");
+
+  const scenes = ["welcome","game1","game2","game3","final"];
+  document.body.setAttribute("data-scene", scenes[pageIndex] || "welcome");
+
+  document.getElementById("p"+pageIndex).scrollTop = 0;
+
+  // start/stop final-page behaviors
+  if(pageIndex === 4) startFinalBehaviors();
+  else stopFinalBehaviors();
+}
+
+/* Confetti hearts */
+function confettiHearts(count=30){
   const hearts = ["💖","💘","💝","💗","💕","💞"];
   for(let i=0;i<count;i++){
     const el = document.createElement("div");
     el.className = "confetti";
     el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-    el.style.left = Math.random()*100 + "vw";
-    el.style.fontSize = (14+Math.random()*18) + "px";
-    el.style.animationDuration = (2.2+Math.random()*2.6) + "s";
+    el.style.left = (Math.random()*100) + "vw";
+    el.style.fontSize = (14 + Math.random()*22) + "px";
+    el.style.animationDuration = (2.1 + Math.random()*2.4) + "s";
     document.body.appendChild(el);
     setTimeout(()=>el.remove(), 5200);
   }
 }
 
-/* Quiz submitting helpers */
-const quizBox = document.getElementById("quizBox");
-const quizSubmitBtn = document.getElementById("quizSubmitBtn");
-const quizResetBtn = document.getElementById("quizResetBtn");
-
-function setQuizControlsDisabled(disabled){
-  quizSubmitBtn.disabled = disabled;
-  quizResetBtn.disabled = disabled;
-
-  quizBox.querySelectorAll(".choice").forEach(btn=>{
-    btn.disabled = disabled;
-    btn.style.pointerEvents = disabled ? "none" : "auto";
-    btn.style.opacity = disabled ? 0.85 : 1;
-  });
-}
-
-function showSubmittingOverlay(){
-  const overlay = document.createElement("div");
-  overlay.className = "submittingOverlay";
-  overlay.innerHTML = `<div class="spinner"></div><div>Submitting…</div>`;
-  overlay.id = "submittingOverlay";
-  quizBox.appendChild(overlay);
-}
-
-function hideSubmittingOverlay(){
-  document.getElementById("submittingOverlay")?.remove();
+/* Wax seal stamp re-trigger */
+function stampSeal(){
+  const seal = document.getElementById("waxSeal");
+  if(!seal) return;
+  seal.classList.remove("stamp");
+  void seal.offsetHeight; // reflow
+  seal.classList.add("stamp");
 }
 
 /* =========================
-   STAGES + THEMES
+   LOCKING FLOW
 ========================= */
-const stageNav = document.getElementById("stageNav");
-const stageEls = [
-  document.getElementById("stage0"),
-  document.getElementById("stage1"),
-  document.getElementById("stage2"),
-  document.getElementById("stage3"),
-  document.getElementById("stage4")
-];
+let unlocked = { p1:true, p2:false, p3:false, p4:false };
 
-const themes = ["welcome", "love-letter", "pop-quiz", "arcade", "polaroid"];
-
-let stage = 0; // 0..4
-let stageDone = [false,false,false,false]; // games 1..4
-
-function renderStageNav(){
-  stageNav.innerHTML = "";
-  const labels = ["0) Welcome", "1) Crossword", "2) Quiz", "3) Heart Catch", "4) Slide Puzzle"];
-
-  labels.forEach((lab, i)=>{
-    const step = document.createElement("div");
-    const done = (i === 0) ? false : stageDone[i-1];
-    step.className = "step" + (done ? " done" : "") + (stage===i ? " active" : "");
-    step.textContent = lab;
-    stageNav.appendChild(step);
-  });
-}
-
-function goToStage(i){
-  stage = i;
-  stageEls.forEach((el, idx)=> el.style.display = (idx===stage ? "block" : "none"));
-  document.body.setAttribute("data-theme", themes[i] || "welcome");
-  renderStageNav();
-}
-
-function markStageDone(gameIndex){
-  stageDone[gameIndex] = true;
-  renderStageNav();
-
-  const stageIndex = gameIndex + 1;
-  if (gameIndex < stageDone.length - 1){
-    goToStage(stageIndex + 1);
-  } else {
-    unlockFinalIfAllDone();
-  }
-}
-
-/* =========================
-   WELCOME
-========================= */
-document.getElementById("startQuestBtn").onclick = () => goToStage(1);
+document.getElementById("startBtn").onclick = ()=> {
+  toast("Good luck 😌");
+  go(1);
+};
 
 /* =========================
    GAME 1: CROSSWORD
@@ -826,12 +824,17 @@ const cwGrid = document.getElementById("cwGrid");
 const clues = document.getElementById("clues");
 const cwCheckBtn = document.getElementById("cwCheckBtn");
 const cwClearBtn = document.getElementById("cwClearBtn");
+const cwMsg = document.getElementById("cwMsg");
+const g1NextRow = document.getElementById("g1NextRow");
 let cwRows = [];
 
 function buildCrossword(){
   cwGrid.innerHTML = "";
   clues.innerHTML = "";
   cwRows = [];
+  cwMsg.textContent = "";
+  cwMsg.className = "p";
+  g1NextRow.style.display = "none";
 
   CROSSWORD.forEach((q, ri)=>{
     const rowEl = document.createElement("div");
@@ -842,12 +845,14 @@ function buildCrossword(){
     for(let i=0;i<answer.length;i++){
       const cell = document.createElement("div");
       cell.className = "cell";
+
       if(i===0){
         const n = document.createElement("div");
         n.className = "number";
         n.textContent = ri+1;
         cell.appendChild(n);
       }
+
       const inp = document.createElement("input");
       inp.maxLength = 1;
 
@@ -892,123 +897,129 @@ function updateCrosswordRow(i){
   if(correct && !r.ok){
     r.ok = true;
     r.rowEl.classList.add("correct");
-    showToast(`Clue ${i+1} ✔️`);
+    toast("Okay smarty 🙄🧠");
   }
   if(!correct && r.ok){
     r.ok = false;
     r.rowEl.classList.remove("correct");
   }
+
   if(cwRows.every(x=>x.ok)){
     cwRows.forEach(x=>x.inputs.forEach(inp=>inp.disabled=true));
-    confettiHearts(18);
-    markStageDone(0);
+    confettiHearts(22);
+    cwMsg.textContent = "Yeah… this was too easy for you.";
+    cwMsg.className = "p";
+    unlocked.p2 = true;
+    g1NextRow.style.display = "flex";
+    setTimeout(()=>toast("Unlocked ✨"), 200);
   }
 }
 
 function checkCrosswordAll(){
   cwRows.forEach((_,i)=>updateCrosswordRow(i));
-  if(!cwRows.every(x=>x.ok)) showToast("Almost… try again 💗");
+  if(!cwRows.every(x=>x.ok)){
+    cwMsg.textContent = "Hmm… concerning 😬 try again";
+    cwMsg.className = "p";
+    toast("Not yet 💔");
+  }
 }
+
 function clearCrossword(){
   cwRows.forEach(r=>{
-    r.inputs.forEach(i=>i.value="");
+    r.inputs.forEach(i=>{
+      i.disabled = false;
+      i.value="";
+    });
     r.ok=false;
     r.rowEl.classList.remove("correct");
   });
+  cwMsg.textContent = "";
+  g1NextRow.style.display = "none";
   cwRows[0]?.inputs[0]?.focus();
 }
 
 cwCheckBtn.onclick = checkCrosswordAll;
 cwClearBtn.onclick = clearCrossword;
+document.getElementById("g1Next").onclick = ()=>{
+  if(!unlocked.p2){ toast("Not unlocked yet"); return; }
+  go(2);
+};
 
 /* =========================
    GAME 2: QUIZ
 ========================= */
-let quizState = [];
+const quizBox = document.getElementById("quizBox");
+const qMsg = document.getElementById("qMsg");
+const g2NextRow = document.getElementById("g2NextRow");
+let selected = null;
 
 function buildQuiz(){
-  hideSubmittingOverlay();
   quizBox.innerHTML = "";
-  quizState = Array(QUIZ.length).fill(null);
+  qMsg.textContent = "";
+  qMsg.className = "p";
+  g2NextRow.style.display = "none";
+  selected = null;
 
-  QUIZ.forEach((item, qi)=>{
-    const qDiv = document.createElement("div");
-    qDiv.className = "q";
+  const title = document.createElement("div");
+  title.className = "qTitle";
+  title.textContent = GAME2.question;
+  quizBox.appendChild(title);
 
-    const title = document.createElement("div");
-    title.className = "qtitle";
-    title.textContent = `${qi+1}. ${item.q}`;
-    qDiv.appendChild(title);
+  const choices = document.createElement("div");
+  choices.className = "choices";
 
-    const choices = document.createElement("div");
-    choices.className = "choices";
-
-    item.choices.forEach((txt, ci)=>{
-      const b = document.createElement("button");
-      b.className = "choice";
-      b.type = "button";
-      b.textContent = txt;
-
-      b.onclick = ()=>{
-        [...choices.children].forEach(ch=>{
-          ch.classList.remove("correct","wrong");
-          ch.style.outline = "none";
-        });
-        quizState[qi] = ci;
-        b.style.outline = "3px solid rgba(233,106,106,.22)";
-      };
-
-      choices.appendChild(b);
-    });
-
-    qDiv.appendChild(choices);
-    quizBox.appendChild(qDiv);
+  GAME2.choices.forEach((txt, idx)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "choice";
+    b.textContent = txt;
+    b.onclick = ()=>{
+      [...choices.children].forEach(x=>x.classList.remove("selected"));
+      b.classList.add("selected");
+      selected = idx;
+    };
+    choices.appendChild(b);
   });
+
+  quizBox.appendChild(choices);
 }
 
 function gradeQuiz(){
-  if(quizState.some(v=>v===null)){
-    showToast("Answer all of them 😌");
+  if(selected === null){
+    qMsg.textContent = "Pick one 😌";
+    qMsg.className = "p";
+    toast("Choose an answer");
     return;
   }
 
-  setQuizControlsDisabled(true);
-  showSubmittingOverlay();
+  const btns = [...quizBox.querySelectorAll(".choice")];
+  btns.forEach((b,i)=>{
+    b.classList.remove("correct","wrong");
+    if(i === GAME2.correctIndex) b.classList.add("correct");
+    if(i === selected && selected !== GAME2.correctIndex) b.classList.add("wrong");
+  });
 
-  const delay = 800;
+  if(selected !== GAME2.correctIndex){
+    qMsg.textContent = "Close… but no. Try again 💌";
+    qMsg.className = "p";
+    toast("Wrong 💔");
+    return;
+  }
 
-  setTimeout(()=>{
-    hideSubmittingOverlay();
-
-    let allCorrect = true;
-    [...quizBox.querySelectorAll(".q")].forEach((qEl, qi)=>{
-      const item = QUIZ[qi];
-      const chosen = quizState[qi];
-      const choiceBtns = [...qEl.querySelectorAll(".choice")];
-
-      choiceBtns.forEach((btn, ci)=>{
-        btn.classList.remove("correct","wrong");
-        if(ci === item.correctIndex) btn.classList.add("correct");
-        if(ci === chosen && chosen !== item.correctIndex) btn.classList.add("wrong");
-      });
-
-      if(chosen !== item.correctIndex) allCorrect = false;
-    });
-
-    setQuizControlsDisabled(false);
-
-    if(allCorrect){
-      showToast("Perfect 😭💖");
-      confettiHearts(18);
-      markStageDone(1);
-    } else {
-      showToast("Close… try again 💗");
-    }
-  }, delay);
+  qMsg.textContent = "Correct. I knew you’d get it 😌";
+  qMsg.className = "p";
+  toast("Unlocked ✨");
+  confettiHearts(16);
+  unlocked.p3 = true;
+  g2NextRow.style.display = "flex";
 }
 
-quizSubmitBtn.onclick = gradeQuiz;
-quizResetBtn.onclick = ()=>{ buildQuiz(); showToast("Cleared ✨"); };
+document.getElementById("qReset").onclick = buildQuiz;
+document.getElementById("qSubmit").onclick = gradeQuiz;
+document.getElementById("g2Next").onclick = ()=>{
+  if(!unlocked.p3){ toast("Not unlocked yet"); return; }
+  go(3);
+};
 
 /* =========================
    GAME 3: HEART CATCH
@@ -1017,39 +1028,46 @@ const arena = document.getElementById("arena");
 const scoreEl = document.getElementById("score");
 const goalEl = document.getElementById("goal");
 const timeEl = document.getElementById("time");
-const startCatchBtn = document.getElementById("startCatchBtn");
-const resetCatchBtn = document.getElementById("resetCatchBtn");
+const hcMsg = document.getElementById("hcMsg");
+const g3NextRow = document.getElementById("g3NextRow");
 
-goalEl.textContent = String(CATCH_GOAL);
+goalEl.textContent = String(HEART_CATCH.goal);
 
-let catchScore = 0;
-let catchTime = CATCH_TIME;
-let catchTimer = null;
-let spawnTimer = null;
 let running = false;
+let score = 0;
+let timeLeft = HEART_CATCH.seconds;
+let timer = null;
+let spawner = null;
 
-function setCatchHUD(){
-  scoreEl.textContent = String(catchScore);
-  timeEl.textContent = String(catchTime);
+function resetCatch(){
+  running = false;
+  score = 0;
+  timeLeft = HEART_CATCH.seconds;
+  scoreEl.textContent = "0";
+  timeEl.textContent = String(timeLeft);
+  arena.innerHTML = "";
+  hcMsg.textContent = "";
+  hcMsg.className = "p";
+  g3NextRow.style.display = "none";
+  clearInterval(timer); timer=null;
+  clearInterval(spawner); spawner=null;
 }
 
 function spawnHeart(){
   const hearts = ["💖","💘","💝","💗","💕","💞"];
   const h = document.createElement("div");
-  h.className = "falling";
+  h.className = "fall";
   h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-
-  const x = Math.random() * (arena.clientWidth - 30);
-  h.style.left = `${x}px`;
-  h.style.fontSize = `${18 + Math.random()*18}px`;
-  h.style.animationDuration = `${1.8 + Math.random()*1.6}s`;
+  h.style.left = (Math.random() * Math.max(10, arena.clientWidth - 30)) + "px";
+  h.style.fontSize = (20 + Math.random()*22) + "px";
+  h.style.animationDuration = (1.4 + Math.random()*1.4) + "s";
 
   h.onclick = ()=>{
     if(!running) return;
-    catchScore += 1;
-    setCatchHUD();
+    score += 1;
+    scoreEl.textContent = String(score);
     h.remove();
-    if(catchScore >= CATCH_GOAL) winCatch();
+    if(score >= HEART_CATCH.goal) winCatch();
   };
 
   h.addEventListener("animationend", ()=> h.remove());
@@ -1058,257 +1076,178 @@ function spawnHeart(){
 
 function startCatch(){
   if(running) return;
+  resetCatch();
   running = true;
-  catchScore = 0;
-  catchTime = CATCH_TIME;
-  arena.innerHTML = "";
-  setCatchHUD();
-  showToast("Go go go! 💖");
+  toast("Go 💖");
 
-  catchTimer = setInterval(()=>{
-    catchTime -= 1;
-    setCatchHUD();
-    if(catchTime <= 0) endCatch(false);
+  timer = setInterval(()=>{
+    timeLeft -= 1;
+    timeEl.textContent = String(timeLeft);
+    if(timeLeft <= 0) endCatch(false);
   }, 1000);
 
-  spawnTimer = setInterval(spawnHeart, 450);
+  spawner = setInterval(spawnHeart, 420);
 }
 
 function endCatch(won){
   running = false;
-  clearInterval(catchTimer);
-  clearInterval(spawnTimer);
-  catchTimer = null;
-  spawnTimer = null;
-  if(!won) showToast("So close! Try again 💗");
+  clearInterval(timer); timer=null;
+  clearInterval(spawner); spawner=null;
+  if(!won){
+    hcMsg.textContent = "You ran out of time 😭 try again.";
+    hcMsg.className = "p";
+    toast("Again 😌");
+  }
 }
 
 function winCatch(){
   endCatch(true);
-  showToast("You did it 😭💖");
-  confettiHearts(22);
-  markStageDone(2);
+  hcMsg.textContent = "Okay clutch actually 😤";
+  hcMsg.className = "p";
+  toast("Unlocked ✨");
+  confettiHearts(28);
+  unlocked.p4 = true;
+  g3NextRow.style.display = "flex";
 }
 
-function resetCatch(){
-  endCatch(false);
-  arena.innerHTML = "";
-  catchScore = 0;
-  catchTime = CATCH_TIME;
-  setCatchHUD();
-  showToast("Reset ✨");
-}
-
-startCatchBtn.onclick = startCatch;
-resetCatchBtn.onclick = resetCatch;
+document.getElementById("hcReset").onclick = resetCatch;
+document.getElementById("hcStart").onclick = startCatch;
+document.getElementById("g3Next").onclick = ()=>{
+  if(!unlocked.p4){ toast("Not unlocked yet"); return; }
+  go(4);
+};
 
 /* =========================
-   GAME 4: SLIDE PUZZLE (3x3)
+   FINAL PAGE: YES grows + MAYBE runs obnoxiously
 ========================= */
-const puzzleBoard = document.getElementById("puzzleBoard");
-const shufflePuzzleBtn = document.getElementById("shufflePuzzleBtn");
-const resetPuzzleBtn = document.getElementById("resetPuzzleBtn");
-const movesEl = document.getElementById("moves");
-const puzzleStatusEl = document.getElementById("puzzleStatus");
-
-let puzzle = [];
-let moves = 0;
-
-function setMoves(n){ moves = n; movesEl.textContent = String(moves); }
-function setPuzzleStatus(t){ puzzleStatusEl.textContent = t; }
-
-function solvedPuzzle(){
-  for(let i=0;i<9;i++) if(puzzle[i] !== i) return false;
-  return true;
-}
-function idxOfBlank(){ return puzzle.indexOf(8); }
-function neighbors(idx){
-  const res = [];
-  const r = Math.floor(idx/3), c = idx%3;
-  if(r>0) res.push(idx-3);
-  if(r<2) res.push(idx+3);
-  if(c>0) res.push(idx-1);
-  if(c<2) res.push(idx+1);
-  return res;
-}
-function canMove(tileIdx){
-  const b = idxOfBlank();
-  return neighbors(b).includes(tileIdx);
-}
-function swap(i,j){
-  const t = puzzle[i];
-  puzzle[i] = puzzle[j];
-  puzzle[j] = t;
-}
-
-function renderPuzzle(){
-  puzzleBoard.innerHTML = "";
-  for(let pos=0; pos<9; pos++){
-    const tile = puzzle[pos];
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "tileBtn";
-
-    if(tile === 8){
-      btn.classList.add("blank");
-      btn.disabled = true;
-    } else {
-      const tileR = Math.floor(tile/3);
-      const tileC = tile%3;
-      btn.style.backgroundImage = `url('${PUZZLE_IMG}')`;
-      btn.style.backgroundPosition = `${tileC * 50}% ${tileR * 50}%`;
-
-      btn.onclick = ()=>{
-        if(!canMove(pos)) return;
-        const b = idxOfBlank();
-        swap(pos, b);
-        setMoves(moves + 1);
-        renderPuzzle();
-
-        if(solvedPuzzle()){
-          setPuzzleStatus("Solved ✅");
-          confettiHearts(28);
-          showToast("Photo restored 😭💖");
-          [...puzzleBoard.querySelectorAll("button")].forEach(x=>x.disabled=true);
-          markStageDone(3);
-        }
-      };
-    }
-    puzzleBoard.appendChild(btn);
-  }
-}
-
-function resetPuzzle(){
-  puzzle = [0,1,2,3,4,5,6,7,8];
-  setMoves(0);
-  setPuzzleStatus("Not started");
-  renderPuzzle();
-}
-
-function isSolvable(arr){
-  let inv = 0;
-  const a = arr.filter(x=>x!==8);
-  for(let i=0;i<a.length;i++){
-    for(let j=i+1;j<a.length;j++){
-      if(a[i] > a[j]) inv++;
-    }
-  }
-  return inv % 2 === 0;
-}
-
-function shufflePuzzle(){
-  let arr;
-  do {
-    arr = [...Array(9).keys()];
-    for(let i=arr.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  } while(!isSolvable(arr) || arr.every((v,i)=>v===i));
-
-  puzzle = arr;
-  setMoves(0);
-  setPuzzleStatus("Shuffled 🎲");
-  renderPuzzle();
-}
-
-shufflePuzzleBtn.onclick = shufflePuzzle;
-resetPuzzleBtn.onclick = resetPuzzle;
-
-/* =========================
-   FINAL UNLOCK
-========================= */
-const lockBadge = document.getElementById("lockBadge");
-const finalBody = document.getElementById("finalBody");
 const yesBtn = document.getElementById("yesBtn");
 const maybeBtn = document.getElementById("maybeBtn");
-const btnRow = document.getElementById("btnRow");
-const finalBox = document.getElementById("finalBox");
-const successBox = document.getElementById("successBox");
-const successHeader = document.getElementById("successHeader");
-const successBody = document.getElementById("successBody");
-const restartAllBtn = document.getElementById("restartAllBtn");
+const btnRowFinal = document.getElementById("btnRowFinal");
+const partyArea = document.getElementById("partyArea");
+const postcard = document.getElementById("postcard");
 
-function unlockFinalIfAllDone(){
-  if(!stageDone.every(Boolean)) return;
+let partyTimer = null;
 
-  lockBadge.textContent = "🔓 Unlocked — you beat the quest 🫶";
-  lockBadge.style.background = "rgba(40,167,69,.12)";
-  lockBadge.style.border = "1px solid rgba(40,167,69,.25)";
-  finalBody.textContent = FINAL_QUESTION;
-  yesBtn.disabled = false;
-  maybeBtn.disabled = false;
-  confettiHearts(32);
+/* YES grows while on final page */
+let yesGrowTimer = null;
+let yesScale = 1;
+function startFinalBehaviors(){
+  // reset
+  yesScale = 1;
+  yesBtn.style.transform = "scale(1)";
+  yesBtn.id = "yesBtn"; // keep stable
+  // grow every 1s, cap at 1.85
+  if(yesGrowTimer) clearInterval(yesGrowTimer);
+  yesGrowTimer = setInterval(()=>{
+    yesScale = Math.min(1.85, yesScale + 0.06);
+    yesBtn.style.transform = `scale(${yesScale})`;
+  }, 1000);
+}
+function stopFinalBehaviors(){
+  if(yesGrowTimer){ clearInterval(yesGrowTimer); yesGrowTimer = null; }
+}
+
+/* Obnoxious MAYBE movement */
+let maybeChaosTimer = null;
+function moveMaybeOnce(){
+  // ensure it can move inside the row
+  maybeBtn.style.position = "absolute";
+
+  const r = btnRowFinal.getBoundingClientRect();
+  const btnW = maybeBtn.offsetWidth || 110;
+  const btnH = maybeBtn.offsetHeight || 52;
+
+  const maxX = Math.max(0, r.width - btnW);
+  const maxY = Math.max(0, r.height - btnH);
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  const rot = (Math.random()*24 - 12);
+  const sk = (Math.random()*6 - 3);
+
+  maybeBtn.style.left = x + "px";
+  maybeBtn.style.top  = y + "px";
+  maybeBtn.style.transform = `rotate(${rot}deg) skewX(${sk}deg)`;
+}
+
+function startMaybeChaos(){
+  // immediate move + rapid spam moves
+  moveMaybeOnce();
+  toast("Don’t do this 😐");
+
+  if(maybeChaosTimer) clearInterval(maybeChaosTimer);
+  let ticks = 0;
+
+  maybeChaosTimer = setInterval(()=>{
+    moveMaybeOnce();
+    ticks++;
+    // after a bit, stop rapid spam but keep annoying
+    if(ticks > 14){
+      clearInterval(maybeChaosTimer);
+      maybeChaosTimer = null;
+    }
+  }, 120);
+}
+
+maybeBtn.addEventListener("mouseenter", startMaybeChaos);
+maybeBtn.addEventListener("click", (e)=>{
+  e.preventDefault();
+  startMaybeChaos();
+  toast("Nice try 😌");
+});
+
+/* Nonstop confetti + meme after YES */
+function startParty(){
+  document.body.classList.add("party");
+  partyArea.style.display = "block";
+  confettiHearts(100);
+  if(partyTimer) clearInterval(partyTimer);
+  partyTimer = setInterval(()=> confettiHearts(40), 850);
+}
+
+function stopParty(){
+  document.body.classList.remove("party");
+  if(partyTimer) clearInterval(partyTimer);
+  partyTimer = null;
 }
 
 yesBtn.onclick = ()=>{
-  finalBox.style.display = "none";
-  successBox.style.display = "block";
-  successHeader.textContent = AFTER_YES_TITLE;
-  successBody.textContent = AFTER_YES_BODY;
-  confettiHearts(45);
+  stampSeal();
+  startParty();
+  toast("Correct answer ✅");
+  if (navigator.vibrate) navigator.vibrate([25, 40, 20]);
+  postcard.scrollIntoView({behavior:"smooth", block:"center"});
 };
 
-maybeBtn.onmouseenter = maybeBtn.onclick = ()=>{
-  if(maybeBtn.disabled) return;
-  const r = btnRow.getBoundingClientRect();
-  const maxX = Math.max(0, r.width - 100);
-  const maxY = Math.max(0, r.height - 45);
-  maybeBtn.style.position = "absolute";
-  maybeBtn.style.left = Math.random() * maxX + "px";
-  maybeBtn.style.top  = Math.random() * maxY + "px";
-  showToast("Averyyyy 😼");
-};
+document.getElementById("restartBtn").onclick = ()=>{
+  stopParty();
+  partyArea.style.display = "none";
 
-restartAllBtn.onclick = ()=>{
-  stageDone = [false,false,false,false];
-  resetFinalUI();
-  buildCrossword();
-  buildQuiz();
-  resetCatch();
-  resetPuzzle();
-  goToStage(0);
-};
-
-function resetFinalUI(){
-  lockBadge.textContent = "🔒 Locked — beat all games";
-  lockBadge.style.background = "rgba(0,0,0,.08)";
-  lockBadge.style.border = "none";
-  finalBody.textContent = "It’s locked until you finish the quest 💌";
-  yesBtn.disabled = true;
-  maybeBtn.disabled = true;
+  // reset maybe positioning
   maybeBtn.style.position = "relative";
   maybeBtn.style.left = "";
   maybeBtn.style.top = "";
-  finalBox.style.display = "block";
-  successBox.style.display = "none";
-}
+  maybeBtn.style.transform = "";
 
-/* Ambient hearts */
-function startAmbientHearts(){
-  const hearts = ["♡","♥","💗","💖"];
-  setInterval(()=>{
-    const h = document.createElement("div");
-    h.className = "ambientHeart";
-    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-    h.style.left = Math.random()*100 + "vw";
-    h.style.fontSize = (10 + Math.random()*18) + "px";
-    h.style.animationDuration = (7 + Math.random()*6) + "s";
-    h.style.opacity = (0.10 + Math.random()*0.10).toFixed(2);
-    document.body.appendChild(h);
-    h.addEventListener("animationend", ()=>h.remove());
-  }, 650);
-}
+  // reset unlocks + rebuild games
+  unlocked = { p1:true, p2:false, p3:false, p4:false };
+  buildCrossword();
+  buildQuiz();
+  resetCatch();
+  go(0);
+};
 
 /* =========================
    INIT
 ========================= */
-buildCrossword();
-buildQuiz();
-setCatchHUD();
-resetPuzzle();
-startAmbientHearts();
-goToStage(0);
+function init(){
+  buildCrossword();
+  buildQuiz();
+  resetCatch();
+  go(0);
+}
+init();
 </script>
 </body>
-</html
+</html>
