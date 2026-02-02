@@ -66,25 +66,12 @@ body::after{
   position:fixed;
   inset:0;
   pointer-events:none;
-  opacity:.12;
+  opacity:.10;
   mix-blend-mode:multiply;
   background:
-    /* vertical fold */
-    linear-gradient(90deg,
-      transparent 0%,
-      transparent 49.5%,
-      rgba(0,0,0,.10) 50%,
-      transparent 50.5%,
-      transparent 100%),
-    /* horizontal fold */
-    linear-gradient(180deg,
-      transparent 0%,
-      transparent 57.5%,
-      rgba(0,0,0,.09) 58%,
-      transparent 58.5%,
-      transparent 100%),
-    /* tiny crease noise */
-    repeating-linear-gradient(135deg, rgba(0,0,0,.02) 0px, rgba(0,0,0,.02) 1px, transparent 2px, transparent 10px);
+    linear-gradient(90deg, transparent 0%, transparent 49.6%, rgba(0,0,0,.25) 50%, transparent 50.4%, transparent 100%),
+    linear-gradient(0deg,  transparent 0%, transparent 42.8%, rgba(0,0,0,.22) 43.2%, transparent 43.6%, transparent 100%),
+    radial-gradient(circle at 50% 43%, rgba(0,0,0,.10) 0%, transparent 38%);
 }
 
 /* Full-screen pages */
@@ -106,7 +93,7 @@ body::after{
 
 /* Centered poster layout */
 .poster{
-  width:min(900px, 96vw);
+  width:min(920px, 96vw);
   margin:0 auto;
   padding: clamp(18px, 4vw, 32px);
   position:relative;
@@ -133,7 +120,7 @@ body::after{
 /* Type */
 .h1{
   font-family:"Great Vibes", cursive;
-  font-size: clamp(54px, 8vw, 86px);
+  font-size: clamp(54px, 8vw, 96px);
   color: var(--red);
   text-align:center;
   margin: 0 0 6px;
@@ -141,18 +128,18 @@ body::after{
 }
 .h2{
   font-family:"Great Vibes", cursive;
-  font-size: clamp(34px, 5.4vw, 54px);
+  font-size: clamp(38px, 6vw, 64px);
   color: var(--red);
   text-align:center;
   margin: 0 0 8px;
   line-height: 1.0;
 }
 .p{
-  font-size: clamp(16px, 2.1vw, 18px);
+  font-size: clamp(16px, 2.2vw, 20px);
   line-height: 1.75;
   text-align:center;
   margin: 10px auto;
-  max-width: 56ch;
+  max-width: 60ch;
 }
 
 /* Buttons: soft, analog */
@@ -162,8 +149,6 @@ body::after{
   justify-content:center;
   flex-wrap:wrap;
   margin-top: 16px;
-  position:relative; /* so maybe can run around inside */
-  min-height: 58px;
 }
 
 .btn{
@@ -175,7 +160,6 @@ body::after{
   font-family: "IM Fell English", serif;
   letter-spacing: .2px;
   transition: transform .12s ease, filter .25s ease, box-shadow .25s ease;
-  will-change: transform;
 }
 .btn:active{ transform: translateY(1px) scale(.99); }
 
@@ -193,12 +177,359 @@ body::after{
 }
 .btn.ghost:hover{ filter: brightness(1.02); }
 
+.btn.big{
+  padding: 16px 32px;
+  font-size: clamp(18px, 2.6vw, 24px);
+  font-weight: 900;
+}
+
 /* Locked helper */
 .lockNote{
   text-align:center;
   font-size: 14px;
   opacity:.8;
   margin-top: 10px;
+}
+
+/* =========================
+   WELCOME: only button + big heart background
+========================= */
+#welcomeCenter{
+  height: calc(100vh - 2*clamp(18px, 4vw, 54px));
+  display:grid;
+  place-items:center;
+  position:relative;
+}
+#welcomeCenter::before{
+  content:"❤";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-family:"Great Vibes", cursive;
+  font-size: min(82vw, 520px);
+  color: rgba(177,18,38,.12);
+  transform: rotate(-6deg);
+  filter: blur(.2px);
+}
+
+/* =========================
+   GAME 1: Crossword grid (rows)
+========================= */
+.cwWrap{
+  width:min(860px, 96vw);
+  margin: 14px auto 0;
+  display:grid;
+  grid-template-columns: 1.2fr .9fr;
+  gap: 14px;
+  align-items:start;
+}
+@media (max-width: 860px){
+  .cwWrap{ grid-template-columns: 1fr; }
+}
+
+.cwPanel{
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.62);
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow: 0 18px 55px rgba(0,0,0,.10);
+}
+
+.cwGrid{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+.cwRow{
+  display:flex;
+  gap: 8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.45);
+  border: 1px dashed rgba(177,18,38,.22);
+}
+.cwRow.correct{
+  border-style: solid;
+  border-color: rgba(40,167,69,.35);
+  background: rgba(40,167,69,.08);
+}
+
+.cell{
+  width: 54px;
+  height: 62px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.75);
+  box-shadow: 0 12px 26px rgba(0,0,0,.08);
+  display:grid;
+  place-items:center;
+  position:relative;
+}
+.cell input{
+  width:100%;
+  height:100%;
+  border:0;
+  background:none;
+  outline:none;
+  text-align:center;
+  font-size: 26px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-family: "IM Fell English", serif;
+}
+.number{
+  position:absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 12px;
+  font-weight: 900;
+  opacity:.7;
+}
+
+.clues{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.clue{
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(0,0,0,.08);
+}
+.clue b{
+  color: var(--red);
+}
+
+/* =========================
+   GAME 2: Quiz
+========================= */
+.quizBox{
+  width: min(720px, 96vw);
+  margin: 16px auto 0;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.65);
+  border:1px solid rgba(0,0,0,.08);
+}
+.qTitle{
+  font-weight: 900;
+  margin-bottom: 12px;
+  text-align:center;
+  font-size: clamp(18px, 2.4vw, 22px);
+}
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.choice{
+  width:100%;
+  text-align:left;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.85);
+  cursor:pointer;
+  font-weight: 700;
+  font-size: clamp(16px, 2.2vw, 18px);
+  font-family: "IM Fell English", serif;
+}
+.choice:hover{ filter: brightness(1.02); }
+.choice.selected{ outline: 4px solid rgba(177,18,38,.18); }
+.choice.correct{ border-color: rgba(40,167,69,.35); background: rgba(40,167,69,.10); }
+.choice.wrong{ border-color: rgba(177,18,38,.30); background: rgba(177,18,38,.08); }
+
+/* =========================
+   GAME 3: Heart catch
+========================= */
+.hud{
+  width:min(720px, 96vw);
+  margin: 10px auto 10px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-weight:900;
+  font-size: clamp(16px, 2.2vw, 18px);
+}
+.arena{
+  width:min(720px, 96vw);
+  height: min(56vh, 420px);
+  margin:0 auto;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.60);
+  position:relative;
+  overflow:hidden;
+  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+}
+.fall{
+  position:absolute;
+  top:-40px;
+  user-select:none;
+  cursor:pointer;
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,.16));
+  animation: fall linear forwards;
+  will-change: transform;
+}
+@keyframes fall{
+  to{ transform: translateY(var(--fallY, 520px)); opacity:.98; }
+}
+
+/* =========================
+   FINAL: Wax-sealed postcard + obnoxious yes mode
+========================= */
+.postcard{
+  width: min(880px, 98vw);
+  margin: 12px auto 0;
+  padding: 34px 26px 44px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #FFFDF7, var(--paper));
+  border: 2px solid rgba(177,18,38,.55);
+  box-shadow: 0 28px 90px rgba(0,0,0,.16);
+  position: relative;
+  transform: rotate(-.4deg);
+}
+
+.postmark{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width: 150px;
+  height: 98px;
+  border-radius: 14px;
+  border: 2px dashed rgba(0,0,0,.16);
+  background: rgba(255,255,255,.55);
+  transform: rotate(5deg);
+  display:grid;
+  place-items:center;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  opacity: .9;
+}
+.postmark span{ display:block; text-align:center; line-height:1.05; }
+
+.kiss{
+  position:absolute;
+  top: 110px;
+  right: 50px;
+  font-size: 34px;
+  transform: rotate(-10deg);
+  opacity:.85;
+}
+
+/* Wax seal stamp */
+.waxSeal{
+  position:absolute;
+  left: 18px;
+  bottom: 14px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #B11226, #7C0D1A);
+  box-shadow: 0 18px 35px rgba(0,0,0,.22);
+  transform: rotate(-10deg);
+  transform-origin: 60% 70%;
+}
+
+.waxSeal::before{
+  content:"❤";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color: rgba(255,255,255,.85);
+  font-size: 44px;
+  text-shadow: 0 8px 18px rgba(0,0,0,.25);
+  opacity: .95;
+  transform: translateY(1px);
+}
+
+.waxSeal::after{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  background: rgba(0,0,0,.12);
+  filter: blur(10px);
+  opacity: 0;
+  transform: translateY(10px) scale(.9);
+  z-index:-1;
+}
+
+/* stamp animation (re-triggered via JS) */
+.waxSeal.stamp{ animation: sealStamp 720ms cubic-bezier(.2,.9,.25,1.05) both; }
+.waxSeal.stamp::after{ animation: sealShadow 720ms cubic-bezier(.2,.9,.25,1.05) both; }
+
+@keyframes sealStamp{
+  0%{ opacity:0; transform: translateY(-32px) rotate(-18deg) scale(.90); }
+  55%{ opacity:1; transform: translateY(0) rotate(-10deg) scale(1.08); }
+  72%{ transform: translateY(0) rotate(-10deg) scale(.98); }
+  100%{ opacity:1; transform: translateY(0) rotate(-10deg) scale(1); }
+}
+@keyframes sealShadow{
+  0%{ opacity:0; transform: translateY(18px) scale(.84); }
+  55%{ opacity:.35; transform: translateY(8px) scale(.98); }
+  72%{ opacity:.18; transform: translateY(10px) scale(.92); }
+  100%{ opacity:.28; transform: translateY(9px) scale(.95); }
+}
+
+/* Meme block */
+.memeBlock{
+  width: min(760px, 98vw);
+  margin: 18px auto 0;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.70);
+  box-shadow: 0 18px 70px rgba(0,0,0,.12);
+  transform: rotate(-.8deg);
+  text-align:center;
+}
+.memeBlock img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: 16px;
+}
+.memeCap{
+  margin-top: 12px;
+  font-weight: 900;
+  font-size: clamp(18px, 2.4vw, 22px);
+  opacity:.90;
+}
+.memeCap.small{
+  opacity:.65;
+  font-weight: 800;
+  font-size: clamp(14px, 2vw, 16px);
+}
+
+/* OBNOXIOUS PARTY MODE (only on YES) */
+body.party{
+  animation: partyFlash 1.0s linear infinite;
+}
+@keyframes partyFlash{
+  0%   { filter: hue-rotate(0deg) saturate(1.05); }
+  50%  { filter: hue-rotate(30deg) saturate(1.55); }
+  100% { filter: hue-rotate(0deg) saturate(1.05); }
+}
+
+/* Confetti hearts */
+.confetti{
+  position:fixed;
+  top:-24px;
+  pointer-events:none;
+  z-index: 9999;
+  animation: confFall linear forwards;
+}
+@keyframes confFall{
+  to{ transform: translateY(112vh) rotate(360deg); opacity:0; }
 }
 
 /* Tiny toast */
@@ -218,419 +549,69 @@ body::after{
 }
 .toast.show{ opacity:1; }
 
-/* Confetti hearts */
-.confetti{
-  position:fixed;
-  top:-24px;
-  pointer-events:none;
-  z-index: 9999;
-  animation: confFall linear forwards;
-}
-@keyframes confFall{
-  to{ transform: translateY(112vh) rotate(360deg); opacity:0; }
-}
-
-/* =========================
-   WELCOME: only button + big heart bg
-========================= */
-#welcomeWrap{
-  min-height: calc(100vh - 120px);
-  display:grid;
-  place-items:center;
-  position:relative;
-}
-#welcomeWrap::before{
-  content:"❤";
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  font-size: min(70vw, 520px);
-  color: rgba(177,18,38,.10);
-  transform: rotate(-8deg);
-  filter: blur(.2px);
-}
-.pulse{
-  animation: pulse 1.2s ease-in-out infinite;
-}
+/* Subtle pulse */
+.pulse{ animation: pulse 1.2s ease-in-out infinite; }
 @keyframes pulse{
   0%,100%{ transform: translateY(0) scale(1); }
-  50%{ transform: translateY(-1px) scale(1.03); }
+  50%{ transform: translateY(-2px) scale(1.04); }
 }
-
-/* =========================
-   GAME 1: CROSSWORD GRID (row-style crossword)
-========================= */
-.cwWrap{
-  width:min(860px, 96vw);
-  margin: 10px auto 0;
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-.cwGrid{
-  width:min(760px, 96vw);
-  margin:0 auto;
-  display:grid;
-  gap: 10px;
-}
-
-.cwRow{
-  display:flex;
-  gap: 8px;
-  justify-content:center;
-  flex-wrap:wrap;
-  padding: 10px 8px;
-  border-radius: 18px;
-  border: 1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.52);
-  box-shadow: 0 14px 34px rgba(0,0,0,.08);
-  position:relative;
-}
-
-.cwRow.correct{
-  border-color: rgba(40,167,69,.35);
-  background: rgba(40,167,69,.08);
-}
-
-.cell{
-  width:52px;
-  height:58px;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.75);
-  box-shadow: 0 10px 22px rgba(0,0,0,.06);
-  position:relative;
-  overflow:hidden;
-  display:grid;
-  place-items:center;
-}
-
-.number{
-  position:absolute;
-  top: 6px;
-  left: 8px;
-  font-size: 11px;
-  font-weight: 900;
-  opacity:.55;
-}
-
-.cell input{
-  width:100%;
-  height:100%;
-  border:0;
-  background:none;
-  outline:none;
-  text-align:center;
-  font-size: 24px;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: var(--ink);
-  font-family: "IM Fell English", serif;
-}
-
-.clues{
-  width:min(740px, 96vw);
-  margin: 0 auto;
-  padding: 14px 14px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.60);
-  border: 1px solid rgba(0,0,0,.08);
-}
-.clue{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding: 10px 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.55);
-  border: 1px dashed rgba(177,18,38,.20);
-  margin: 10px 0;
-}
-.clue b{ min-width: 20px; color: var(--red); }
-
-/* =========================
-   GAME 2: Quiz
-========================= */
-.quizBox{
-  width: min(720px, 96vw);
-  margin: 16px auto 0;
-  padding: 16px;
-  border-radius: 20px;
-  background: rgba(255,255,255,.65);
-  border:1px solid rgba(0,0,0,.08);
-  box-shadow: 0 16px 50px rgba(0,0,0,.10);
-}
-.qTitle{
-  font-weight: 900;
-  margin-bottom: 12px;
-  text-align:center;
-  font-size: clamp(18px, 2.6vw, 22px);
-}
-.choices{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.choice{
-  width:100%;
-  text-align:left;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.85);
-  cursor:pointer;
-  font-weight: 700;
-  font-family: "IM Fell English", serif;
-  font-size: 18px;
-}
-.choice:hover{ filter: brightness(1.02); }
-.choice.selected{ outline: 3px solid rgba(177,18,38,.18); }
-.choice.correct{ border-color: rgba(40,167,69,.35); background: rgba(40,167,69,.10); }
-.choice.wrong{ border-color: rgba(177,18,38,.30); background: rgba(177,18,38,.08); }
-
-/* =========================
-   GAME 3: Heart catch
-========================= */
-.hud{
-  width:min(740px, 96vw);
-  margin: 10px auto 10px;
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  font-weight:900;
-  font-size: 18px;
-}
-.arena{
-  width:min(740px, 96vw);
-  height: min(56vh, 420px);
-  margin:0 auto;
-  border-radius:20px;
-  border:1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.60);
-  position:relative;
-  overflow:hidden;
-  box-shadow: 0 16px 55px rgba(0,0,0,.10);
-}
-.fall{
-  position:absolute;
-  top:-32px;
-  user-select:none;
-  cursor:pointer;
-  filter: drop-shadow(0 10px 14px rgba(0,0,0,.16));
-  animation: fall linear forwards;
-}
-@keyframes fall{
-  to{ transform: translateY(120%); opacity:.95; }
-}
-
-/* =========================
-   FINAL: Wax-sealed postcard + obnoxious yes mode
-========================= */
-.postcard{
-  width: min(920px, 96vw);
-  margin: 24px auto 0;
-  padding: 36px 32px 44px;
-  border-radius: 26px;
-  background: linear-gradient(180deg, #FFFDF7, var(--paper));
-  border: 3px solid rgba(177,18,38,.55);
-  box-shadow: 0 26px 85px rgba(0,0,0,.16);
-  position: relative;
-}
-
-.postmark{
-  position:absolute;
-  top:16px;
-  right:16px;
-  width: 140px;
-  height: 92px;
-  border-radius: 14px;
-  border: 2px dashed rgba(0,0,0,.16);
-  background: rgba(255,255,255,.55);
-  transform: rotate(5deg);
-  display:grid;
-  place-items:center;
-  font-weight: 900;
-  font-size: 12px;
-  letter-spacing: .7px;
-  text-transform: uppercase;
-  opacity: .9;
-}
-.postmark span{ display:block; text-align:center; line-height:1.1; }
-
-.kiss{
-  position:absolute;
-  top: 104px;
-  right: 44px;
-  font-size: 30px;
-  transform: rotate(-10deg);
-  opacity:.85;
-}
-
-/* Wax seal stamp */
-.waxSeal{
-  position:absolute;
-  left: 22px;
-  bottom: 18px;
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #B11226, #7C0D1A);
-  box-shadow: 0 22px 48px rgba(0,0,0,.28);
-  transform: rotate(-10deg);
-  transform-origin: 60% 70%;
-}
-.waxSeal::before{
-  content:"❤";
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  color: rgba(255,255,255,.86);
-  font-size: 42px;
-  text-shadow: 0 10px 20px rgba(0,0,0,.25);
-  opacity: .95;
-  transform: translateY(1px);
-}
-.waxSeal::after{
-  content:"";
-  position:absolute;
-  inset:-8px;
-  border-radius:50%;
-  background: rgba(0,0,0,.12);
-  filter: blur(12px);
-  opacity: 0;
-  transform: translateY(12px) scale(.9);
-  z-index:-1;
-}
-
-/* stamp animation (re-triggered via JS) */
-.waxSeal.stamp{ animation: sealStamp 720ms cubic-bezier(.2,.9,.25,1.05) both; }
-.waxSeal.stamp::after{ animation: sealShadow 720ms cubic-bezier(.2,.9,.25,1.05) both; }
-
-@keyframes sealStamp{
-  0%{ opacity:0; transform: translateY(-30px) rotate(-18deg) scale(.92); }
-  55%{ opacity:1; transform: translateY(0) rotate(-10deg) scale(1.07); }
-  72%{ transform: translateY(0) rotate(-10deg) scale(.99); }
-  100%{ opacity:1; transform: translateY(0) rotate(-10deg) scale(1); }
-}
-@keyframes sealShadow{
-  0%{ opacity:0; transform: translateY(16px) scale(.86); }
-  55%{ opacity:.35; transform: translateY(7px) scale(.99); }
-  72%{ opacity:.18; transform: translateY(9px) scale(.92); }
-  100%{ opacity:.28; transform: translateY(8px) scale(.95); }
-}
-
-/* Meme block */
-.memeBlock{
-  width: min(800px, 96vw);
-  margin: 26px auto 0;
-  padding: 18px;
-  border-radius: 22px;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.70);
-  box-shadow: 0 18px 60px rgba(0,0,0,.12);
-  transform: rotate(-.7deg);
-  text-align:center;
-}
-.memeBlock img{
-  width:100%;
-  height:auto;
-  display:block;
-  border-radius: 18px;
-}
-.memeCap{
-  margin-top: 12px;
-  font-weight: 900;
-  opacity:.9;
-  font-size: 20px;
-}
-.memeCap.small{
-  opacity:.65;
-  font-weight: 800;
-  font-size: 15px;
-}
-
-/* OBNOXIOUS PARTY MODE (only on YES) */
-body.party{
-  animation: partyFlash 1.05s linear infinite;
-}
-@keyframes partyFlash{
-  0%   { filter: hue-rotate(0deg) saturate(1.05); }
-  50%  { filter: hue-rotate(28deg) saturate(1.5); }
-  100% { filter: hue-rotate(0deg) saturate(1.05); }
-}
-
-/* FINAL PAGE: BIG MODE */
-#p4 .h2{
-  font-size: clamp(48px, 7vw, 86px);
-  margin-bottom: 18px;
-}
-#p4 .p{ font-size: clamp(18px, 2.6vw, 22px); }
-
-/* Bigger buttons on final page */
-#p4 .btn{
-  padding: 18px 36px;
-  font-size: 20px;
-}
-#p4 .btn.primary{
-  font-size: 22px;
-}
-
-/* "YES grows" visual smoothing */
-#yesBtn{
-  transform-origin: center;
-  will-change: transform;
-}
+.good{ color: color-mix(in srgb, var(--red) 70%, black); font-weight: 900; }
+.bad{ color: #6a2b2b; opacity:.9; }
 </style>
 </head>
 
 <body data-scene="welcome">
+  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <!-- =========================
-       PAGE 0: WELCOME (button only)
+       PAGE 0: WELCOME
+       (ONLY BUTTON + BIG HEART)
   ========================== -->
   <section class="page active" id="p0">
-    <div class="poster" id="welcomeWrap">
-      <div class="btnrow">
-        <button class="btn primary pulse" id="startBtn" style="font-size:22px;padding:18px 38px;">
-          Click here 💌
-        </button>
+    <div class="poster">
+      <div id="welcomeCenter">
+        <button class="btn primary big pulse" id="startBtn">Click here 💌</button>
       </div>
     </div>
   </section>
 
   <!-- =========================
-       PAGE 1: GAME 1 (CROSSWORD GRID)
+       PAGE 1: GAME 1 (Crossword)
   ========================== -->
   <section class="page" id="p1">
     <div class="poster">
       <div class="h2">Game 1</div>
-      <p class="p">Fill the crossword. One row = one answer. Don’t embarrass me 😌</p>
+      <p class="p">Crossword time. Answer all three to unlock the next page 😌</p>
       <div class="divider"></div>
 
       <div class="cwWrap">
-        <div class="cwGrid" id="cwGrid"></div>
-        <div class="clues" id="clues"></div>
-      </div>
+        <div class="cwPanel">
+          <div class="cwGrid" id="cwGrid"></div>
 
-      <div class="btnrow">
-        <button class="btn ghost" id="cwClearBtn">Clear</button>
-        <button class="btn primary" id="cwCheckBtn">Check</button>
-      </div>
+          <div class="btnrow">
+            <button class="btn ghost" id="cwClearBtn">Clear</button>
+            <button class="btn primary" id="cwCheckBtn">Check</button>
+          </div>
 
-      <p class="p" id="cwMsg" style="min-height:2.2em;"></p>
+          <p class="p" id="cwMsg" style="min-height:2.2em;"></p>
 
-      <div class="btnrow" id="g1NextRow" style="display:none">
-        <button class="btn primary" id="g1Next">Next page →</button>
+          <div class="btnrow" id="g1NextRow" style="display:none">
+            <button class="btn primary big" id="g1Next">Next page →</button>
+          </div>
+        </div>
+
+        <div class="cwPanel">
+          <div class="p" style="margin-top:0; font-weight:900;">Clues</div>
+          <div class="clues" id="clues"></div>
+          <p class="lockNote">(Answers are all letters. New York = NEWYORK)</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- =========================
-       PAGE 2: GAME 2 (QUIZ)
+       PAGE 2: GAME 2 (Quiz)
   ========================== -->
   <section class="page" id="p2">
     <div class="poster">
@@ -648,13 +629,13 @@ body.party{
       <p class="p" id="qMsg" style="min-height: 2.2em;"></p>
 
       <div class="btnrow" id="g2NextRow" style="display:none">
-        <button class="btn primary" id="g2Next">Next page →</button>
+        <button class="btn primary big" id="g2Next">Next page →</button>
       </div>
     </div>
   </section>
 
   <!-- =========================
-       PAGE 3: GAME 3 (HEART CATCH)
+       PAGE 3: GAME 3 (Heart catch)
   ========================== -->
   <section class="page" id="p3">
     <div class="poster">
@@ -677,13 +658,13 @@ body.party{
       <p class="p" id="hcMsg" style="min-height: 2.2em;"></p>
 
       <div class="btnrow" id="g3NextRow" style="display:none">
-        <button class="btn primary" id="g3Next">Final page 💌</button>
+        <button class="btn primary big" id="g3Next">Final page 💌</button>
       </div>
     </div>
   </section>
 
   <!-- =========================
-       PAGE 4: FINAL (WAX POSTCARD)
+       PAGE 4: FINAL (Wax postcard)
   ========================== -->
   <section class="page" id="p4">
     <div class="poster">
@@ -697,23 +678,24 @@ body.party{
         </div>
         <div class="kiss">💋</div>
 
-        <div class="h2" style="margin-top: 18px;">Will you be my Valentine?</div>
-        <p class="p" style="max-width: 52ch; margin-top: 10px;">
+        <div class="h2" style="margin-top: 26px; font-size: clamp(48px, 7vw, 86px);">Will you be my Valentine?</div>
+        <p class="p" style="max-width: 62ch; margin-top: 10px; font-size: clamp(18px, 2.6vw, 24px);">
           Answer correctly (there is only one correct answer).
         </p>
 
-        <div class="btnrow" id="btnRowFinal" style="margin-top: 18px;">
-          <button class="btn primary" id="yesBtn">YES 💘</button>
-          <button class="btn ghost" id="maybeBtn">maybe 🙈</button>
+        <div class="btnrow" style="margin-top: 18px; position:relative;" id="finalBtnRow">
+          <button class="btn primary big" id="yesBtn">YES 💘</button>
+          <button class="btn ghost big" id="maybeBtn">maybe 🙈</button>
         </div>
 
+        <!-- Wax seal -->
         <div class="waxSeal" id="waxSeal" aria-hidden="true"></div>
       </div>
 
       <!-- Hidden obnoxious celebration -->
       <div id="partyArea" style="display:none;">
         <div class="memeBlock">
-          <!-- put pray-crying.gif next to this html file -->
+          <!-- Put pray-crying.gif next to this HTML file -->
           <img src="pray-crying.gif" alt="meme" />
           <div class="memeCap">me being so normal about this</div>
           <div class="memeCap small">anyway yeah no big deal or anything</div>
@@ -724,9 +706,7 @@ body.party{
         </p>
 
         <div class="btnrow">
-          <button class="btn primary" id="restartBtn" style="font-size:22px;padding:18px 40px;">
-            Play again
-          </button>
+          <button class="btn primary big" id="restartBtn">Play again</button>
         </div>
       </div>
     </div>
@@ -736,26 +716,19 @@ body.party{
 /* =========================
    CUSTOMIZE SECTION
 ========================= */
-function normalize(s){
-  return (s || "").toUpperCase().replace(/[^A-Z0-9]/g,"");
-}
-
 const CROSSWORD = [
-  { clue: "Our favorite date spot?", answer: "CARROLLTON" },
-  { clue: "Our favorite brunch spot?", answer: "EGGTASTIC" },
-  { clue: "Our best trip?", answer: "NEW YORK" }
+  { clue: "our favorite date spot", answer: "CARROLLTON" },
+  { clue: "our Favorite brunch spot?", answer: "EGGTASTIC" },
+  { clue: "our best trip?", answer: "NEWYORK" }
 ];
 
-const GAME2 = {
+const QUIZ = {
   question: "Where did we have our first date?",
   choices: ["Panera Bread", "Chili's", "Olive Garden", "In-N-Out"],
   correctIndex: 0
 };
 
-const HEART_CATCH = {
-  goal: 10,
-  seconds: 12
-};
+const HEART_CATCH = { goal: 10, seconds: 12 };
 
 /* =========================
    HELPERS
@@ -766,7 +739,9 @@ function toast(msg){
   toastEl.classList.add("show");
   setTimeout(()=>toastEl.classList.remove("show"), 1100);
 }
-
+function normalize(s){
+  return String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+}
 function go(pageIndex){
   for(let i=0;i<=4;i++){
     document.getElementById("p"+i).classList.remove("active");
@@ -778,9 +753,8 @@ function go(pageIndex){
 
   document.getElementById("p"+pageIndex).scrollTop = 0;
 
-  // start/stop final-page behaviors
-  if(pageIndex === 4) startFinalBehaviors();
-  else stopFinalBehaviors();
+  if(pageIndex === 4) startFinalGrow();
+  else stopFinalGrow();
 }
 
 /* Confetti hearts */
@@ -791,8 +765,8 @@ function confettiHearts(count=30){
     el.className = "confetti";
     el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
     el.style.left = (Math.random()*100) + "vw";
-    el.style.fontSize = (14 + Math.random()*22) + "px";
-    el.style.animationDuration = (2.1 + Math.random()*2.4) + "s";
+    el.style.fontSize = (14 + Math.random()*26) + "px";
+    el.style.animationDuration = (2.0 + Math.random()*2.6) + "s";
     document.body.appendChild(el);
     setTimeout(()=>el.remove(), 5200);
   }
@@ -803,7 +777,7 @@ function stampSeal(){
   const seal = document.getElementById("waxSeal");
   if(!seal) return;
   seal.classList.remove("stamp");
-  void seal.offsetHeight; // reflow
+  void seal.offsetHeight;
   seal.classList.add("stamp");
 }
 
@@ -811,11 +785,7 @@ function stampSeal(){
    LOCKING FLOW
 ========================= */
 let unlocked = { p1:true, p2:false, p3:false, p4:false };
-
-document.getElementById("startBtn").onclick = ()=> {
-  toast("Good luck 😌");
-  go(1);
-};
+document.getElementById("startBtn").onclick = ()=> go(1);
 
 /* =========================
    GAME 1: CROSSWORD
@@ -831,10 +801,10 @@ let cwRows = [];
 function buildCrossword(){
   cwGrid.innerHTML = "";
   clues.innerHTML = "";
-  cwRows = [];
   cwMsg.textContent = "";
   cwMsg.className = "p";
   g1NextRow.style.display = "none";
+  cwRows = [];
 
   CROSSWORD.forEach((q, ri)=>{
     const rowEl = document.createElement("div");
@@ -849,7 +819,7 @@ function buildCrossword(){
       if(i===0){
         const n = document.createElement("div");
         n.className = "number";
-        n.textContent = ri+1;
+        n.textContent = String(ri+1);
         cell.appendChild(n);
       }
 
@@ -878,11 +848,11 @@ function buildCrossword(){
 
     const c = document.createElement("div");
     c.className = "clue";
-    c.innerHTML = `<b>${ri+1}.</b><div>${q.clue}</div>`;
+    c.innerHTML = `<b>${ri+1}.</b> <div>${q.clue}</div>`;
     clues.appendChild(c);
   });
 
-  cwRows[0]?.inputs[0]?.focus();
+  setTimeout(()=>cwRows[0]?.inputs[0]?.focus(), 80);
 }
 
 function rowGuess(r){
@@ -908,7 +878,7 @@ function updateCrosswordRow(i){
     cwRows.forEach(x=>x.inputs.forEach(inp=>inp.disabled=true));
     confettiHearts(22);
     cwMsg.textContent = "Yeah… this was too easy for you.";
-    cwMsg.className = "p";
+    cwMsg.className = "p good";
     unlocked.p2 = true;
     g1NextRow.style.display = "flex";
     setTimeout(()=>toast("Unlocked ✨"), 200);
@@ -919,34 +889,33 @@ function checkCrosswordAll(){
   cwRows.forEach((_,i)=>updateCrosswordRow(i));
   if(!cwRows.every(x=>x.ok)){
     cwMsg.textContent = "Hmm… concerning 😬 try again";
-    cwMsg.className = "p";
-    toast("Not yet 💔");
+    cwMsg.className = "p bad";
+    toast("Try again");
   }
 }
 
 function clearCrossword(){
   cwRows.forEach(r=>{
-    r.inputs.forEach(i=>{
-      i.disabled = false;
-      i.value="";
-    });
+    r.inputs.forEach(i=>{ i.value=""; i.disabled=false; });
     r.ok=false;
     r.rowEl.classList.remove("correct");
   });
   cwMsg.textContent = "";
+  cwMsg.className = "p";
   g1NextRow.style.display = "none";
-  cwRows[0]?.inputs[0]?.focus();
+  setTimeout(()=>cwRows[0]?.inputs[0]?.focus(), 80);
 }
 
 cwCheckBtn.onclick = checkCrosswordAll;
 cwClearBtn.onclick = clearCrossword;
+
 document.getElementById("g1Next").onclick = ()=>{
-  if(!unlocked.p2){ toast("Not unlocked yet"); return; }
+  if(!unlocked.p2){ toast("Not unlocked yet 😌"); return; }
   go(2);
 };
 
 /* =========================
-   GAME 2: QUIZ
+   GAME 2: QUIZ (restored)
 ========================= */
 const quizBox = document.getElementById("quizBox");
 const qMsg = document.getElementById("qMsg");
@@ -962,19 +931,22 @@ function buildQuiz(){
 
   const title = document.createElement("div");
   title.className = "qTitle";
-  title.textContent = GAME2.question;
+  title.textContent = QUIZ.question;
   quizBox.appendChild(title);
 
   const choices = document.createElement("div");
   choices.className = "choices";
 
-  GAME2.choices.forEach((txt, idx)=>{
+  QUIZ.choices.forEach((txt, idx)=>{
     const b = document.createElement("button");
     b.type = "button";
     b.className = "choice";
     b.textContent = txt;
+
     b.onclick = ()=>{
-      [...choices.children].forEach(x=>x.classList.remove("selected"));
+      [...choices.children].forEach(x=>{
+        x.classList.remove("selected","correct","wrong");
+      });
       b.classList.add("selected");
       selected = idx;
     };
@@ -987,7 +959,7 @@ function buildQuiz(){
 function gradeQuiz(){
   if(selected === null){
     qMsg.textContent = "Pick one 😌";
-    qMsg.className = "p";
+    qMsg.className = "p bad";
     toast("Choose an answer");
     return;
   }
@@ -995,34 +967,34 @@ function gradeQuiz(){
   const btns = [...quizBox.querySelectorAll(".choice")];
   btns.forEach((b,i)=>{
     b.classList.remove("correct","wrong");
-    if(i === GAME2.correctIndex) b.classList.add("correct");
-    if(i === selected && selected !== GAME2.correctIndex) b.classList.add("wrong");
+    if(i === QUIZ.correctIndex) b.classList.add("correct");
+    if(i === selected && selected !== QUIZ.correctIndex) b.classList.add("wrong");
   });
 
-  if(selected !== GAME2.correctIndex){
+  if(selected !== QUIZ.correctIndex){
     qMsg.textContent = "Close… but no. Try again 💌";
-    qMsg.className = "p";
+    qMsg.className = "p bad";
     toast("Wrong 💔");
     return;
   }
 
   qMsg.textContent = "Correct. I knew you’d get it 😌";
-  qMsg.className = "p";
-  toast("Unlocked ✨");
-  confettiHearts(16);
+  qMsg.className = "p good";
+  confettiHearts(18);
   unlocked.p3 = true;
   g2NextRow.style.display = "flex";
+  toast("Unlocked ✨");
 }
 
 document.getElementById("qReset").onclick = buildQuiz;
 document.getElementById("qSubmit").onclick = gradeQuiz;
 document.getElementById("g2Next").onclick = ()=>{
-  if(!unlocked.p3){ toast("Not unlocked yet"); return; }
+  if(!unlocked.p3){ toast("Not unlocked yet 😌"); return; }
   go(3);
 };
 
 /* =========================
-   GAME 3: HEART CATCH
+   GAME 3: HEART CATCH (fixed fall distance)
 ========================= */
 const arena = document.getElementById("arena");
 const scoreEl = document.getElementById("score");
@@ -1058,9 +1030,15 @@ function spawnHeart(){
   const h = document.createElement("div");
   h.className = "fall";
   h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-  h.style.left = (Math.random() * Math.max(10, arena.clientWidth - 30)) + "px";
-  h.style.fontSize = (20 + Math.random()*22) + "px";
-  h.style.animationDuration = (1.4 + Math.random()*1.4) + "s";
+
+  const x = Math.random() * Math.max(10, arena.clientWidth - 34);
+  h.style.left = x + "px";
+  h.style.fontSize = (20 + Math.random()*20) + "px";
+  h.style.animationDuration = (1.7 + Math.random()*1.7) + "s";
+
+  // IMPORTANT: fall all the way through the arena
+  const fallY = arena.clientHeight + 120;
+  h.style.setProperty("--fallY", fallY + "px");
 
   h.onclick = ()=>{
     if(!running) return;
@@ -1095,7 +1073,7 @@ function endCatch(won){
   clearInterval(spawner); spawner=null;
   if(!won){
     hcMsg.textContent = "You ran out of time 😭 try again.";
-    hcMsg.className = "p";
+    hcMsg.className = "p bad";
     toast("Again 😌");
   }
 }
@@ -1103,9 +1081,9 @@ function endCatch(won){
 function winCatch(){
   endCatch(true);
   hcMsg.textContent = "Okay clutch actually 😤";
-  hcMsg.className = "p";
+  hcMsg.className = "p good";
   toast("Unlocked ✨");
-  confettiHearts(28);
+  confettiHearts(26);
   unlocked.p4 = true;
   g3NextRow.style.display = "flex";
 }
@@ -1113,105 +1091,94 @@ function winCatch(){
 document.getElementById("hcReset").onclick = resetCatch;
 document.getElementById("hcStart").onclick = startCatch;
 document.getElementById("g3Next").onclick = ()=>{
-  if(!unlocked.p4){ toast("Not unlocked yet"); return; }
+  if(!unlocked.p4){ toast("Not unlocked yet 😌"); return; }
   go(4);
 };
 
 /* =========================
-   FINAL PAGE: YES grows + MAYBE runs obnoxiously
+   FINAL PAGE:
+   - Maybe moves OBNOXIOUSLY
+   - Yes grows the longer she's on final page
+   - Nonstop confetti + meme after YES
 ========================= */
 const yesBtn = document.getElementById("yesBtn");
 const maybeBtn = document.getElementById("maybeBtn");
-const btnRowFinal = document.getElementById("btnRowFinal");
 const partyArea = document.getElementById("partyArea");
 const postcard = document.getElementById("postcard");
+const finalBtnRow = document.getElementById("finalBtnRow");
 
 let partyTimer = null;
+let maybeTimer = null;
 
-/* YES grows while on final page */
-let yesGrowTimer = null;
-let yesScale = 1;
-function startFinalBehaviors(){
-  // reset
-  yesScale = 1;
-  yesBtn.style.transform = "scale(1)";
-  yesBtn.id = "yesBtn"; // keep stable
-  // grow every 1s, cap at 1.85
-  if(yesGrowTimer) clearInterval(yesGrowTimer);
-  yesGrowTimer = setInterval(()=>{
-    yesScale = Math.min(1.85, yesScale + 0.06);
-    yesBtn.style.transform = `scale(${yesScale})`;
-  }, 1000);
-}
-function stopFinalBehaviors(){
-  if(yesGrowTimer){ clearInterval(yesGrowTimer); yesGrowTimer = null; }
-}
-
-/* Obnoxious MAYBE movement */
-let maybeChaosTimer = null;
-function moveMaybeOnce(){
-  // ensure it can move inside the row
-  maybeBtn.style.position = "absolute";
-
-  const r = btnRowFinal.getBoundingClientRect();
-  const btnW = maybeBtn.offsetWidth || 110;
-  const btnH = maybeBtn.offsetHeight || 52;
-
-  const maxX = Math.max(0, r.width - btnW);
-  const maxY = Math.max(0, r.height - btnH);
-
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  const rot = (Math.random()*24 - 12);
-  const sk = (Math.random()*6 - 3);
-
-  maybeBtn.style.left = x + "px";
-  maybeBtn.style.top  = y + "px";
-  maybeBtn.style.transform = `rotate(${rot}deg) skewX(${sk}deg)`;
-}
-
-function startMaybeChaos(){
-  // immediate move + rapid spam moves
-  moveMaybeOnce();
-  toast("Don’t do this 😐");
-
-  if(maybeChaosTimer) clearInterval(maybeChaosTimer);
-  let ticks = 0;
-
-  maybeChaosTimer = setInterval(()=>{
-    moveMaybeOnce();
-    ticks++;
-    // after a bit, stop rapid spam but keep annoying
-    if(ticks > 14){
-      clearInterval(maybeChaosTimer);
-      maybeChaosTimer = null;
-    }
-  }, 120);
-}
-
-maybeBtn.addEventListener("mouseenter", startMaybeChaos);
-maybeBtn.addEventListener("click", (e)=>{
-  e.preventDefault();
-  startMaybeChaos();
-  toast("Nice try 😌");
-});
-
-/* Nonstop confetti + meme after YES */
 function startParty(){
   document.body.classList.add("party");
   partyArea.style.display = "block";
-  confettiHearts(100);
+  confettiHearts(110);
   if(partyTimer) clearInterval(partyTimer);
-  partyTimer = setInterval(()=> confettiHearts(40), 850);
+  partyTimer = setInterval(()=> confettiHearts(44), 850);
 }
-
 function stopParty(){
   document.body.classList.remove("party");
   if(partyTimer) clearInterval(partyTimer);
   partyTimer = null;
 }
 
+/* Super obnoxious maybe: teleports + jitters continuously while hovered */
+function placeMaybeRandom(){
+  const r = finalBtnRow.getBoundingClientRect();
+  // keep inside row area (with extra chaos padding)
+  const maxX = Math.max(0, r.width - maybeBtn.offsetWidth);
+  const maxY = Math.max(0, r.height - maybeBtn.offsetHeight);
+
+  // teleport
+  const x = Math.random() * (maxX + 120) - 60;
+  const y = Math.random() * (maxY + 80) - 40;
+
+  maybeBtn.style.position = "absolute";
+  maybeBtn.style.left = x + "px";
+  maybeBtn.style.top  = y + "px";
+  maybeBtn.style.transform = `rotate(${(Math.random()*26-13)}deg)`;
+}
+
+maybeBtn.addEventListener("mouseenter", ()=>{
+  toast("Don’t do this 😐");
+  placeMaybeRandom();
+  if(maybeTimer) clearInterval(maybeTimer);
+  maybeTimer = setInterval(placeMaybeRandom, 140); // obnoxious
+});
+
+maybeBtn.addEventListener("mouseleave", ()=>{
+  if(maybeTimer){ clearInterval(maybeTimer); maybeTimer = null; }
+  // keep it annoying even after leaving? (still slightly rude)
+  setTimeout(()=>{ if(document.getElementById("p4").classList.contains("active")) placeMaybeRandom(); }, 250);
+});
+
+maybeBtn.onclick = ()=>{
+  toast("Nope 😌");
+  placeMaybeRandom();
+};
+
+/* YES grows over time on final page */
+let growTimer = null;
+let grow = 1;
+
+function startFinalGrow(){
+  grow = 1;
+  yesBtn.style.transform = "scale(1)";
+  if(growTimer) clearInterval(growTimer);
+
+  growTimer = setInterval(()=>{
+    // grows up to ~1.75
+    grow = Math.min(1.75, grow + 0.02);
+    yesBtn.style.transform = `scale(${grow})`;
+  }, 220);
+}
+function stopFinalGrow(){
+  if(growTimer){ clearInterval(growTimer); growTimer = null; }
+  yesBtn.style.transform = "scale(1)";
+}
+
+/* YES explosion */
 yesBtn.onclick = ()=>{
   stampSeal();
   startParty();
@@ -1220,21 +1187,21 @@ yesBtn.onclick = ()=>{
   postcard.scrollIntoView({behavior:"smooth", block:"center"});
 };
 
+/* Restart */
 document.getElementById("restartBtn").onclick = ()=>{
   stopParty();
   partyArea.style.display = "none";
 
-  // reset maybe positioning
+  if(maybeTimer){ clearInterval(maybeTimer); maybeTimer = null; }
   maybeBtn.style.position = "relative";
   maybeBtn.style.left = "";
   maybeBtn.style.top = "";
   maybeBtn.style.transform = "";
 
-  // reset unlocks + rebuild games
-  unlocked = { p1:true, p2:false, p3:false, p4:false };
   buildCrossword();
   buildQuiz();
   resetCatch();
+  unlocked = { p1:true, p2:false, p3:false, p4:false };
   go(0);
 };
 
